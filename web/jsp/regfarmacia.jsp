@@ -1,26 +1,9 @@
-<%@ page import="util.LoginCheck" %>
-<%@ page import="Beans.LoginBean" %>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Enroll New Pharmacy</title>
-    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/home.css">
-    <%
-        if(! (LoginCheck.check((LoginBean) session.getAttribute("LoginBean"), request, "reg").equals("LOGIN_OK")))
-        {
-            request.setAttribute("exitCode", "Couldn't log in");
-    %>
-
-
-    <script type="text/javascript">
-        window.location.replace('error.jsp');
-    </script>
-    <%
-        }
-    %>
-
     <script type="text/javascript" src="../javascript/validazione.js"></script>
+    <jsp:include page="../util/login.jsp"/>
 </head>
 <body>
 <div id="container">
@@ -29,72 +12,70 @@
     </div>
 
     <div id="cont">
-        <div class="clear">
         <div id="left" class="left">
-            <ul>
-                <li><a href="<%=request.getContextPath()%>/jsp/home.jsp">HOME</a></li>
-                <li><a href="<%=request.getContextPath()%>/jsp/account.jsp">ACCOUNT</a></li>
-                <li><a href="<%=request.getContextPath()%>/jsp/mail.jsp">MAIL</a></li>
-                <li><a href="<%=request.getContextPath()%>/jsp/logout.jsp">LOGOUT</a></li>
-            </ul>
+           <jsp:include page="../util/menu.jsp"/>
         </div>
 
         <div id="elenco" class="right">
-        <form action="<%=request.getContextPath()%>/regfarm.do" method="post" name="form" onsubmit="return validatePharmacyForm()">
-            <div class="fleft">
-            <h4>(Chief) Pharmacist Data: </h4>
-                <div class="clear">
-                <div class="tleft">Name</div>
-                <div class="tright"><input type="text" name="nome" id="nome" required></div>
+            <form action="<%=request.getContextPath()%>/regfarm.do" method="post" name="form" onsubmit="return validatePharmacyForm()">
+                <div class="fleft">
+                    <h4>(Chief) Pharmacist Data: </h4>
+                    <div class="clear">
+                        <div class="tleft">Name</div>
+                        <div class="tright"><input type="text" name="nome" id="nome" required></div>
+                    </div>
+                    <div class="clear">
+                        <div class="tleft">Surname</div>
+                        <div class="tright"><input type="text" name="cognome" id="cognome" required></div>
+                    </div>
+                    <div class="clear">
+                        <div class="tleft">Fiscal Code</div>
+                        <div class="tright"><input type="text" name="cf" id="cf" required></div>
+                    </div>
+                    <div class="clear">
+                        <div class="tleft">Username</div>
+                        <div class="tright"><input type="text" name="username" id="username" required></div>
+                    </div>
+                    <div class="clear">
+                        <div class="tleft">Password</div>
+                        <div class="tright"><input type="password" name="password" id="password" required></div>
+                    </div>
+                    <div class="clear">
+                        <div class="tleft">Conferma Password</div>
+                        <div class="tright"><input type="password" name="passwordConfirm" id="passwordConfirm" required></div>
+                    </div>
+                    <div class="clear">
+                        <div class="tleft">Date of birth (dd-mm-yyyy)</div>
+                        <div class="tright"><input type="text" name="dataNascita" id="dataNascita"></div>
+                    </div>
                 </div>
-                <div class="clear">
-                <div class="tleft">Surname</div>
-                <div class="tright"><input type="text" name="cognome" id="cognome" required></div>
+                <div class="fright">
+                    <h4>Pharmacy Data</h4>
+                    <div class="clear">
+                        <div class="tleft">Name</div>
+                        <div class="tright"><input type="text" name="nomeF" id="nomeF" required></div>
+                    </div>
+                    <div class="clear">
+                        <div class="tleft">Address</div>
+                        <div class="tright"><input type="text" name="indirizzo" id="indirizzo" required></div>
+                    </div>
+                    <div class="clear">
+                        <div class="tleft">Telephone Number</div>
+                        <div class="tright"><input type="text" name="telefono" id="telefono" required></div>
+                    </div>
+                    <br><br><br><br>
                 </div>
-                <div class="clear">
-                <div class="tleft">Fiscal Code</div>
-                <div class="tright"><input type="text" name="cf" id="cf" required></div>
+                <div class="center">
+                    <input type="submit" value="Submit">
                 </div>
-                <div class="clear">
-                <div class="tleft">Username</div>
-                <div class="tright"><input type="text" name="username" id="username" required></div>
-                </div>
-                <div class="clear">
-                <div class="tleft">Password</div>
-                <div class="tright"><input type="password" name="password" id="password" required></div>
-                </div>
-                <div class="clear">
-                <div class="tleft">Conferma Password</div>
-                <div class="tright"><input type="password" name="passwordConfirm" id="passwordConfirm" required></div>
-                </div>
-                <div class="clear">
-                <div class="tleft">Date of birth (dd-mm-yyyy)</div>
-                <div class="tright"><input type="text" name="dataNascita" id="dataNascita"></div>
-                </div>
-            </div>
-            <div class="fright">
-                <h4>Pharmacy Data</h4>
-                <div class="clear">
-                <div class="tleft">Name</div>
-                <div class="tright"><input type="text" name="nomeF" id="nomeF" required></div>
-                </div>
-                <div class="clear">
-                <div class="tleft">Address</div>
-                <div class="tright"><input type="text" name="indirizzo" id="indirizzo" required></div>
-                </div>
-                <div class="clear">
-                <div class="tleft">Telephone Number</div>
-                <div class="tright"><input type="text" name="telefono" id="telefono" required></div>
-                </div>
-                <br><br><br><br>
-            </div>
-            <div class="center"><input type="submit" value="Submit"></div>
-        </form>
+            </form>
         </div>
-    </div>
+        <div class="clear"/>
     </div>
     <div id= "footer">
-        <h6>Created by Noemi Bertoldi - All rights reserved - 2017</h6>
+       <script>
+           $("footer").load("../util/footer.html");
+       </script>
     </div>
 </div>
 </body>
