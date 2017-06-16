@@ -1,0 +1,134 @@
+#login
+{
+    width: auto;
+    display: table;
+    margin: auto;
+    font-family: Doodle;
+}
+body
+{
+    background-image: url('../src/health.jpg');
+    background-size:cover;
+}
+#header
+{
+    margin: 30px;
+    background-image: url('../src/bg.png');
+    background-repeat:repeat;
+    border: 1px solid black;
+    margin-top: 5%;
+}
+#header h1
+{
+    font-style:oblique;
+    font-family:"Arial Rounded MT Bold";
+    text-align:center;
+    text-align-last:center;
+    margin-top: 2%;
+
+    opacity:1;
+}
+#cont
+{
+    background-image: url('../src/bg.png');
+    background-repeat:repeat;
+    border: 1px solid #000000;
+}
+.center
+{
+    margin-left:50%;
+    padding: 10px;
+
+}
+#footer
+{
+    bottom:0;
+    position:absolute;
+    text-align:left;
+}
+#footer h6
+{
+    color: #448644;
+}
+#h2
+{
+    text-align: center;
+    font-family: Doodle;
+}
+#left
+{
+   border: 1px solid black;
+}
+#elenco
+{
+    font-style: italic;
+    text-decoration: dotted;
+
+}
+.left
+{
+    float: left;
+    display: block;
+    width: 15%;
+    margin: 0 auto;
+    padding: 10px;
+    height: 350px;
+}
+.right
+{
+    float: left;
+    display: block;
+    width: 75%;
+    height: 350px;
+}
+.tleft
+{
+    width: 30%;
+    display: block;
+    float: left;
+    text-align: right;
+}
+.tright
+{
+    width: 33%;
+    display: block;
+    margin-left: 20px;
+    float:left;
+}
+.fleft
+{
+    width: 45%;
+    display: block;
+    float: left;
+    margin-left: 30px;
+}
+.fright
+{
+    width: 45%;
+    display: block;
+    float: right;
+    margin-left: 10px;
+}
+.fcenter
+{
+    margin-right: 10%;
+    margin-left: 10%;
+}
+#elenco > div
+{
+    display: flex;
+}
+#center > div
+{
+    text-align: center;
+    margin-left: 15%;
+}
+.clear
+{
+    clear: both;
+}
+img
+{
+    float: left;
+    margin-left: 20px;
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+        <!DOCTYPE struts-config PUBLIC
+                "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+                "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+    <form-beans>
+        <form-bean name="LoginBean" type="Beans.LoginBean"/>
+        <form-bean name="FarmBean" type="Beans.FarmBean"/>
+        <form-bean name="PersBean" type="Beans.PersBean"/>
+        <form-bean name="MagBean" type="Beans.MagBean"/>
+    </form-beans>
+    <action-mappings>
+        <action path="/login" type="Actions.RegisterAction" name="LoginBean" scope="session">
+            <forward name="LOGIN_OK" path="/jsp/home.jsp"/>
+            <forward name="ERROR" path="/jsp/error.jsp"/>
+        </action>
+        <action path="/regfarm" type="Actions.RegFarm" name="FarmBean" scope="request">
+            <forward name="REGISTER" path="/jsp/error.jsp"/>
+        </action>
+        <action path="/regpers" type="Actions.RegPers" name="PersBean" scope="request">
+            <forward name="REGISTER" path="/jsp/error.jsp"/>
+        </action>
+        <action path="/riempiMag" type="Actions.RiempiMag" name="MagBean" scope="request">
+            <forward name="RIEMPI_OK" path="/jsp/magazzino.jsp"></forward>
+            <forward name="ERROR" path="/jsp/error.jsp"/>
+        </action>
+        <action path="/carrello" type="Actions.Carrello" name="ProdBean" scope="request">
+            <forward name="ADD_OK" path="/jsp/acquisto.jsp"/>
+            <forward name="ERROR" path="/jsp/error.jsp"/>
+        </action>
+        <action path="/acquisto" type="Actions.Acquisto">
+            <forward name="PURCHASE_OK" path="/jsp/error.jsp"/>
+            <forward name="ERROR" path="/jsp/error.jsp"/>
+        </action>
+    </action-mappings>
+</struts-config>

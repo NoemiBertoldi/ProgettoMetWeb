@@ -1,0 +1,55 @@
+<head>
+  <meta charset="UTF-8">
+  <title>Accounting Service</title>
+  <link rel="stylesheet" type="text/css" href="css/home.css">
+
+</head>
+<body>
+<div id="container">
+
+  <div id="header" style="height: 116px">
+    <h1>Accounting Service For Regional Pharmacies</h1>
+  </div>
+
+  <div id="cont">
+
+    <div id="h2">
+      <h2>Log in</h2>
+    </div>
+    <div id="login" class="center">
+
+      <form action = "login.do" method = "post">
+        <div class="clear">
+          <div class="clear">
+          <div class="tleft">Username</div>
+          <div class="tright"><input type = "text" name = "username" required style="width: 90px"></div>
+            <img src="src/qmark.png" title="REGION : Username = regional code PHARMACY PERSONNEL : Username = the username defined while signing in" alt="REGION : Username = regional code PHARMACY PERSONNEL : Username = the username defined while signing in"></div>
+
+          <br>
+          <div class="clear">
+            <div class="tleft">Password</div>
+            <div class="tright"><input type = "password" name = "passwd" required style="width: 90px"></div>
+          </div>
+            <br>
+          <div class="clear">
+            <div class="tleft"><input type = "radio" name = "role" value = "reg" checked = "checked"></div>
+            <div class="tright">REGION</div>
+          </div>
+          <div class="clear">
+            <div class="tleft"><input type = "radio" name = "role" value = "pers"></div>
+            <div class="tright">PERSONNEL</div>
+          </div>
+        <input type = "submit" value = "Log in">
+        </div>
+      </form>
+
+    </div>
+
+  </div>
+</div>
+
+<div id= "footer">
+  <h6>Created by Noemi Bertoldi - All rights reserved - 2017</h6>
+</div>
+</body>
+</html>
