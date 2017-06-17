@@ -73,9 +73,7 @@
         <div class="clear"/>
     </div>
     <div id= "footer">
-       <script>
-           $("footer").load("../util/footer.html");
-       </script>
+        <h6>Created by Noemi Bertoldi - All rights reserved - 2017</h6>
     </div>
 </div>
 </body>

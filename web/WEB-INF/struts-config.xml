@@ -10,6 +10,7 @@
         <form-bean name="FarmBean" type="Beans.FarmBean"/>
         <form-bean name="PersBean" type="Beans.PersBean"/>
         <form-bean name="MagBean" type="Beans.MagBean"/>
+        <form-bean name="ProdBean" type="Beans.ProdBean"/>
     </form-beans>
     <action-mappings>
         <action path="/login" type="Actions.RegisterAction" name="LoginBean" scope="session">
