@@ -8,7 +8,6 @@
 <%
     if(! (LoginCheck.check((LoginBean) session.getAttribute("LoginBean"), request, null).equals("LOGIN_OK")))
     {
-        request.setAttribute("exitCode", "Couldn't log in");
 %>
 
 <script type="text/javascript">

@@ -23,6 +23,8 @@ function validateCf(cf, user)
 {
     if (cf.length != 16)
     {
+        //"azzera" il colore di tutti gli altri campi e mette rosso solo quello sbagliato.
+        //distinzione reg-pers per sapere quali campi sbiancare (il form è uno solo)
         if(user == "reg")
             blankPharmacyFields();
         else
@@ -161,4 +163,9 @@ function validatePharmacyForm()
         ret = validateNumber(tel, "reg");
 
     return ret;
+}
+
+function validatePrescriptionForm()
+{
+    alert("Validating...");
 }

@@ -100,7 +100,7 @@ public class LoginCheck
                 }
                 else
                 {
-                    request.setAttribute("exitCode", "Area riservata a " + roleCheck);
+                    request.getSession().setAttribute("exitCode", "This area is reserved to: " + roleCheck);
                     return "ERROR";
                 }
             }
@@ -115,7 +115,7 @@ public class LoginCheck
         }
         else
         {
-            request.setAttribute("exitCode", "Username o Password non corretti");
+            request.getSession().setAttribute("exitCode", "Username or Password are not correct");
             connection.close();
             return "ERROR";
         }

@@ -11,6 +11,7 @@
         <form-bean name="PersBean" type="Beans.PersBean"/>
         <form-bean name="MagBean" type="Beans.MagBean"/>
         <form-bean name="ProdBean" type="Beans.ProdBean"/>
+        <form-bean name="PresBean" type="Beans.PresBean"/>
     </form-beans>
     <action-mappings>
         <action path="/login" type="Actions.RegisterAction" name="LoginBean" scope="session">
@@ -18,22 +19,30 @@
             <forward name="ERROR" path="/jsp/error.jsp"/>
         </action>
         <action path="/regfarm" type="Actions.RegFarm" name="FarmBean" scope="request">
-            <forward name="REGISTER" path="/jsp/error.jsp"/>
+            <forward name="REGISTER_OK" path="/jsp/regOk.jsp"/>
+            <forward name="REGISTER_FAIL" path="/jsp/error.jsp"/>
         </action>
         <action path="/regpers" type="Actions.RegPers" name="PersBean" scope="request">
-            <forward name="REGISTER" path="/jsp/error.jsp"/>
+            <forward name="REGISTER_FAIL" path="/jsp/error.jsp"/>
+            <forward name="REGISTER_OK" path="/jsp/regOk.jsp"/>
         </action>
         <action path="/riempiMag" type="Actions.RiempiMag" name="MagBean" scope="request">
-            <forward name="RIEMPI_OK" path="/jsp/magazzino.jsp"></forward>
+            <forward name="RIEMPI_OK" path="/jsp/magazzino.jsp"/>
             <forward name="ERROR" path="/jsp/error.jsp"/>
         </action>
-        <action path="/carrello" type="Actions.Carrello" name="ProdBean" scope="request">
-            <forward name="ADD_OK" path="/jsp/acquisto.jsp"/>
-            <forward name="ERROR" path="/jsp/error.jsp"/>
+        <action path="/cart" type = "Actions.Carrello" name="ProdBean" scope = "request" >
+            <forward name="ADD_OK" path="/jsp/acquisto.jsp" />
+            <forward name="NEED_RECIPE" path="/jsp/ricetta.jsp" />
+            <forward name="ERROR" path="/jsp/error.jsp" />
         </action>
-        <action path="/acquisto" type="Actions.Acquisto">
-            <forward name="PURCHASE_OK" path="/jsp/error.jsp"/>
-            <forward name="ERROR" path="/jsp/error.jsp"/>
+
+        <action path="/prescription" type = "Actions.Carrello" name="PresBean" scope = "request" >
+            <forward name="ADD_OK" path="/jsp/acquisto.jsp" />
+        </action>
+
+        <action path="/purchase" type = "Actions.Acquisto">
+            <forward name="PURCHASE_OK" path="/jsp/acquisto.jsp" />
+            <forward name="ERROR" path="/jsp/error.jsp" />
         </action>
     </action-mappings>
 </struts-config>

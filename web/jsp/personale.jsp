@@ -19,7 +19,7 @@
         </div>
 
         <div id="elenco" class="right">
-            <table style="width:100%">
+            <table>
                 <tr>
                     <th>Name</th>
                     <th>Surname</th>
@@ -27,7 +27,6 @@
                     <th>Role</th>
                     <th>Fiscal Code</th>
                     <th>Date of Birth</th>
-                    <th>Regional Code</th>
                 </tr>
                 <%
                     TableReader reader = new TableReader();
@@ -43,7 +42,6 @@
                     <td><%= table.getString("ruolo").toUpperCase() %></td>
                     <td><%= table.getString("cf") %></td>
                     <td><%= table.getString("datanascita") %></td>
-                    <td><%= table.getString("codregionale") %></td>
                 </tr>
                 <%
                     }

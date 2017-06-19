@@ -36,12 +36,12 @@ public class RegFarm extends Action
         }
         catch (Exception e)
         {
-            System.out.println("Errore connessione al DB");
+            System.out.println("No DB connection");
             e.printStackTrace();
             connection.close();
 
-            request.setAttribute("exitCode", "Errore Connessione al DB");
-            return mapping.findForward("REGISTER");
+            request.setAttribute("exitCode", "No DB connection");
+            return mapping.findForward("REGISTER_FAIL");
         }
 
         try {
@@ -74,17 +74,17 @@ public class RegFarm extends Action
             st.executeUpdate(query);
 
 
-            request.setAttribute("exitCode", "REGISTRAZIONE AVVENUTA CON SUCCESSO");
-            return mapping.findForward("REGISTER");
+            request.setAttribute("exitCode", "Successfully Registered");
+            return mapping.findForward("REGISTER_OK");
         }
         catch (Exception e)
         {
-            System.out.println("Errore nella query");
+            System.out.println("Query Error");
             e.printStackTrace();
             connection.close();
 
-            request.setAttribute("exitCode", "Query sql non valida");
-            return mapping.findForward("REGISTER");
+            request.setAttribute("exitCode", "Invalid SQL query");
+            return mapping.findForward("REGISTER_FAIL");
         }
     }
 }

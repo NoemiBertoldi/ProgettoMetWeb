@@ -7,7 +7,7 @@
 <body>
 <div id="container">
     <%
-        request.getSession().removeAttribute("RegisterBean");
+        request.getSession().removeAttribute("LoginBean");
     %>
     <script type="text/javascript">
         window.location.replace('<%=request.getContextPath()%>/index.html');

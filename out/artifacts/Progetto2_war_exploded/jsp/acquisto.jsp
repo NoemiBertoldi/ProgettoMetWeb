@@ -6,7 +6,7 @@
 <head>
     <title>Purchase</title>
     <jsp:include page="../util/login.jsp"/>
-
+    <script type="text/javascript" src="<%=request.getContextPath()%>/javascript/validazione.js"></script>
 </head>
 <body>
 
@@ -25,6 +25,7 @@
                 <tr>
                     <th>Product Name</th>
                     <th>Description</th>
+                    <th>Cost</th>
                     <th>Available Quantity</th>
                     <th>Prescription</th>
                     <th>Quantity</th>
@@ -40,32 +41,34 @@
                 <tr>
                     <td><%= table.getString("nome") %></td>
                     <td><%= table.getString("descrizione") %></td>
+                    <td><%= table.getString("prezzo")%>/td>
                     <td><%= table.getString("quantitaDisponibile") %></td>
                     <td>
                         <%
                             if(table.getBoolean("conRicetta"))
                             {
                         %>
-                        &#10004
+                        &#10004;
                         <%
                             }
                             else
                             {
                         %>
-                        &#10008
+                        &#10008;
                         <%
                             }
                         %>
                     </td>
 
-                    <form action="<%=request.getContextPath()%>/carrello.do" method="post" name="form">
+                    <form action="<%=request.getContextPath()%>/cart.do" method="post" name="form">
                         <td>
                             <input type="number" name="qty" min="0" max="5">boxes<br>
                         </td>
                         <td class="blank">
-                            <input type="submit" value="Add to Cart">
                             <input type="text" name="productName" id="productName" value="<%= table.getString("codProdotto") %>"
-                               style="visibility:hidden">
+                                                 style="visibility:hidden">
+                            <input type="submit" value="Add to Cart">
+
                         </td>
                     </form>
                 </tr>
@@ -75,7 +78,7 @@
             </table>
 
             <br>
-            <form action="<%=request.getContextPath()%>/acquisto.do" method="post" name="form">
+            <form action="<%=request.getContextPath()%>/purchase.do" method="post" name="form">
                 <input type ="submit" value="Purchase">
             </form>
         </div>
