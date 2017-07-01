@@ -43,7 +43,7 @@
                         <select name="username">
                             <option value="<%= username %>"><%= username %></option>
                         </select>
-                            
+
                     </div>
                         <%
                         }

@@ -15,9 +15,11 @@
            <jsp:include page="../util/menu.jsp"/>
         </div>
         <div id="elenco" class="right">
-            <a href="<%= request.getContextPath()%>/jsp/inbox.jsp">Inbox mail</a><br>
-            <a href="<%= request.getContextPath()%>/jsp/sent.jsp">Sent mail</a><br>
-            <a href="<%= request.getContextPath()%>/jsp/new.jsp">Write new mail</a>
+            <ul>
+                <li><a href="<%= request.getContextPath()%>/jsp/inbox.jsp">Inbox mail</a></li>
+                <li><a href="<%= request.getContextPath()%>/jsp/sent.jsp">Sent mail</a></li>
+                <li><a href="<%= request.getContextPath()%>/jsp/new.jsp">Write new mail</a></li>
+            </ul>
         </div>
         <div class="clear"/>
     </div>

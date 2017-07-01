@@ -86,25 +86,48 @@ public class TableReader {
         return table;
     }
 
-    public ResultSet buildNewMail(String role, String username) throws SQLException {
+    public ResultSet buildNewMail(String role, String username) throws SQLException
+    {
         ResultSet table;
         String query;
         int farmacia = -1;
 
-        if (role.toLowerCase().equals("reg"))
-        {
+        if (role.toLowerCase().equals("reg")) {
             query = "SELECT nome AS username FROM farmacie";
         }
         else
         {
             query = "SELECT idFarmacia FROM operatori WHERE username = '" + username + "'";
-            table = getTable(query);
+            table= getTable(query);
 
             while (table.next())
                 farmacia = table.getInt("idFarmacia");
 
             query = "SELECT username FROM operatori WHERE idFarmacia = " + farmacia;
         }
+        return getTable(query);
+    }
+    public ResultSet buildInboxTable(String role, String username) throws SQLException
+    {
+
+        String query;
+
+        if (role.toLowerCase().equals("reg"))
+            query = "SELECT fromReg, fromOp, msg, oggetto, dt_invio FROM Messaggi WHERE toReg = '" + username + "'";
+        else
+            query = "SELECT fromReg, fromOp, msg, oggetto, dt_invio FROM Messaggi WHERE toOp = '" + username + "'";
+
+        return getTable(query);
+    }
+    public ResultSet buildSentTable(String role, String username) throws SQLException
+    {
+        ResultSet table;
+        String query;
+
+        if (role.toLowerCase().equals("reg"))
+            query = "SELECT toReg, toOp, msg, oggetto, dt_invio FROM Messaggi WHERE fromReg = '" + username + "'";
+        else
+            query = "SELECT toReg, toOp, msg, oggetto, dt_invio FROM Messaggi WHERE fromOp = '" + username + "'";
 
         return getTable(query);
     }
