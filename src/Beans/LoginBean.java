@@ -1,6 +1,5 @@
 package Beans;
 
-import org.apache.struts.*;
 import org.apache.struts.action.ActionForm;
 
 public class LoginBean extends ActionForm

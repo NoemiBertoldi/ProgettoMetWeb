@@ -3,7 +3,7 @@
 <head>
     <title>Prescription</title>
     <jsp:include page="../util/login.jsp"/>
-    <script type="text/javascript" src="<%=request.getContextPath()%>/javascript/validazione.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/javascript/val_ricetta.js"></script>
 </head>
 <body>
 <div id="container">

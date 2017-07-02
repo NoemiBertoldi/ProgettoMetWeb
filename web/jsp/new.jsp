@@ -24,7 +24,7 @@
         </div>
 
         <div id="elenco" class="right" align="center">
-            <form action="/mail.do" method="post" name="form" onsubmit="return validateMail()">
+            <form action="<%=request.getContextPath()%>/mail.do" method="post" name="form">
                 <div class="clear">
                     <div class="tleft">Receiver Username</div>
                     <%
@@ -32,27 +32,37 @@
                         {
                             TableReader reader = new TableReader();
                             LoginBean bean = ((LoginBean) session.getAttribute("LoginBean"));
-                            ResultSet table = reader.buildNewMail(role, bean.getUsername());
+                            String userUsername = bean.getUsername();
+                            ResultSet table = reader.buildNewMail(role, userUsername);
                             String username;
+                            boolean reg = role.equals("reg");
 
                             while(table.next())
                             {
                                 username = table.getString("username");
+                                if(!reg && username.equals(userUsername))
+                                    continue;
                     %>
                     <div class="tright">
-                        <select name="username">
-                            <option value="<%= username %>"><%= username %></option>
-                        </select>
-
-                    </div>
-                        <%
+                    <input type="checkbox" name="username" value="<%= username %>"><%= username %>
+                    <%
                         }
+                        if(role.equals("tf"))
+                        {
+                    %>
+                    <input type="checkbox" name="username" value="regPiemonte">Regione Piemonte
+                    <%
+                        }
+
+                    <%
+
                         }
                         catch (Exception e)
                         { }
                     %>
+                    </div>
                 </div>
-                    <br>
+
                 <div class="clear">
                     <div class="tleft">Subject</div>
                     <div class="tright"><input type="text" name="obj" id="sub" required></div>

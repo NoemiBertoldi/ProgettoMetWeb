@@ -12,24 +12,15 @@ public class LoginCheck
     {
         LoginBean bean = (LoginBean) form;
         HttpSession session;
-        Connection connection = null;
         Statement st = null;
         ResultSet resultSet;
-        String username = "", password = "", role = "";
+        String username, password, role;
         boolean loginOk = false;
 
-        try
+        Connection connection=DbConnection.connect();
+        if(connection==null)
         {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/MetWeb_tab", "fedora", "fedora");
-        }
-        catch (Exception e)
-        {
-            System.out.println("Errore connessione al DB");
-            e.printStackTrace();
-            connection.close();
-
-            return "Errore Connessione al DB";
+            return "No DB connection";
         }
 
         try

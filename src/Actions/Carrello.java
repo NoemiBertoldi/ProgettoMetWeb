@@ -47,7 +47,6 @@ public class Carrello extends Action
             {
                 prodBean = (ProdBean) form;
                 codProdotto = prodBean.getProductName();
-                /*per ora non va*/
                 try
                 {
                     qty = Integer.parseInt(prodBean.getQty());

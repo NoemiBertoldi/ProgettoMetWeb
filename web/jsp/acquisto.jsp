@@ -41,7 +41,7 @@
                 <tr>
                     <td><%= table.getString("nome") %></td>
                     <td><%= table.getString("descrizione") %></td>
-                    <td><%= table.getString("prezzo")%>/td>
+                    <td><%= table.getString("prezzo")%></td>
                     <td><%= table.getString("quantitaDisponibile") %></td>
                     <td>
                         <%

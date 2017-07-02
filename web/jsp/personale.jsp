@@ -30,7 +30,7 @@
                 </tr>
                 <%
                     TableReader reader = new TableReader();
-                    ResultSet table = reader.buildWarehouseTable(((LoginBean) session.getAttribute("LoginBean")).getUsername());
+                    ResultSet table = reader.buildPersonnelTable(((LoginBean) session.getAttribute("LoginBean")).getUsername());
 
                     while(table.next())
                     {

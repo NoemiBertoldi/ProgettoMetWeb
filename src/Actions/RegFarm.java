@@ -1,6 +1,6 @@
 package Actions;
 
-import Beans.LoginBean;
+import util.DbConnection;
 import Beans.FarmBean;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -9,12 +9,9 @@ import org.apache.struts.action.ActionMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Date;
 
 public class RegFarm extends Action
 {
@@ -22,56 +19,76 @@ public class RegFarm extends Action
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         FarmBean bean = (FarmBean) form;
-        HttpSession session;
-        Connection connection = null;
-        Statement st = null;
+        Statement statement = null;
         ResultSet resultSet;
-        String username = "", password = "", role = "", cf = "", nome = "", cognome = "", codReg = "";
+        String username, password, role, cf, nome, cognome;
         String indirizzo = "", telefono = "", nomeF = "", dataNascita = "";
 
-        try
+        Connection connection=DbConnection.connect();
+        if(connection==null)
         {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/MetWeb_tab", "fedora", "fedora");
-        }
-        catch (Exception e)
-        {
-            System.out.println("No DB connection");
-            e.printStackTrace();
-            connection.close();
-
             request.setAttribute("exitCode", "No DB connection");
             return mapping.findForward("REGISTER_FAIL");
         }
 
-        try {
-            st = connection.createStatement();
+        try
+        {
+            statement = connection.createStatement();
             username = bean.getUsername();
             password = bean.getPassword();
             role = "TF";
             cf = bean.getCf();
             nome = bean.getNome();
             cognome = bean.getCognome();
-            codReg = bean.getCodRegionale();
             dataNascita = bean.getDataNascita();
             nomeF = bean.getNomeF();
             indirizzo = bean.getIndirizzo();
             telefono = bean.getTelefono();
 
-            String query = "INSERT INTO Farmacie (nome, indirizzo, telefono) VALUES ("
-                    + "'" + nomeF + "', " + "'" + indirizzo + "', " + "'" + telefono + "')";
-            st.executeUpdate(query);
+            String query = "SELECT * FROM Farmacie WHERE nome = '" + nomeF + "'" + " AND indirizzo = '" + indirizzo +
+                    "' AND telefono = '" + telefono + "'";
+            resultSet = statement.executeQuery(query);
+            int conta = 0;
 
-            query = "SELECT id FROM Farmacie WHERE nome = '" + nomeF + "' AND indirizzo = '" + indirizzo + "' AND telefono = '" + telefono + "'";
-            resultSet = st.executeQuery(query);
+            while(resultSet.next())
+                conta++;
+
+            if(conta != 0)
+            {
+                request.setAttribute("exitCode", "This Pharmacy already exists");
+                return mapping.findForward("REGISTER");
+            }
+
+            query= "SELECT * FROM operatori WHERE username='"+username+"'";
+            resultSet= statement.executeQuery(query);
+            conta=0;
+            while(resultSet.next())
+                conta++;
+            if(conta!=0)
+            {
+                request.setAttribute("exitCode", "Staff member alredy exists");
+                return mapping.findForward("REGISTER_OK");
+            }
+
+            query = "INSERT INTO Farmacie (nome, indirizzo, telefono) VALUES ("
+                    + "'" + nomeF + "', " + "'" + indirizzo + "', " + "'" + telefono + "')";
+            statement.executeUpdate(query);
+
+            query = "SELECT id FROM Farmacie WHERE nome = '" + nomeF + "' AND indirizzo = '" + indirizzo +
+                    "' AND telefono = '" + telefono + "'";
+
+            resultSet = statement.executeQuery(query);
             int idFarmacia = 0;
+
             while(resultSet.next())
                 idFarmacia = resultSet.getInt("id");
 
-            query = "INSERT INTO Operatori (cf, idFarmacia, ruolo, nome, cognome, dataNascita, codRegionale, username, pass) values ("
-                    + "'" + cf + "', " + "'" + idFarmacia + "', " + "'" + role + "', " + "'" + nome + "', " + "'" + cognome + "', " + "'" + dataNascita + "', "
-                    + "'" + codReg + "', " + "'" + username + "', " + "'" + password + "')";
-            st.executeUpdate(query);
+            query = "INSERT INTO Operatori (cf, idFarmacia, ruolo, nome, cognome, dataNascita,  username, password) " +
+                    "values ("
+                    + "'" + cf + "', " + "'" + idFarmacia + "', " + "'" + role + "', " + "'" + nome + "', " +
+                    "'" + cognome + "', " + "'" + dataNascita + "', "+
+                    "'" + username + "', " + "'" + password + "')";
+            statement.executeUpdate(query);
 
 
             request.setAttribute("exitCode", "Successfully Registered");

@@ -3,7 +3,7 @@
     width: auto;
     display: table;
     margin: auto;
-    font-family: NanumGothic;
+    font-family: Comfortaa;
 }
 body
 {
@@ -22,7 +22,7 @@ body
 #header h1
 {
     font-style:oblique;
-    font-family: NanumGothic;
+    font-family: Comfortaa;
     text-align:center;
     text-align-last:center;
     margin-top: 3%;
@@ -55,7 +55,7 @@ body
 #h2
 {
     text-align: center;
-    font-family: NanumGothic;
+    font-family: Comfortaa;
 }
 #left
 {

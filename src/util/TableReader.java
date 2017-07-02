@@ -75,7 +75,7 @@ public class TableReader {
         while (table.next())
             farmacia = table.getInt("idFarmacia");
 
-        query = "select prodotti.nome, prodotti.descrizione, prodotti.immagine, magazzino.quantitaDisponibile "
+        query = "select prodotti.nome, prodotti.descrizione,prodotti.prezzo,prodotti.conricetta,prodotti.codprodotto, magazzino.quantitaDisponibile "
                 + "from operatori join farmacie on operatori.idFarmacia = farmacie.id "
                 + "join magazzino on farmacie.id = magazzino.idFarmacia "
                 + "join prodotti on magazzino.codProdotto = prodotti.codprodotto "

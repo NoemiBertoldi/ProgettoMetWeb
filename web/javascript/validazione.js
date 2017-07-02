@@ -15,22 +15,18 @@ function blankPersonnelFields()
     document.getElementById("password").style.backgroundColor = "white";
     document.getElementById("passwordConfirm").style.backgroundColor = "white";
     document.getElementById("dataNascita").style.backgroundColor = "white";
-    document.getElementById("codRegionale").style.backgroundColor = "white";
-    document.getElementById("dataNascita").style.backgroundColor = "white";
 }
 
 function validateCf(cf, user)
 {
     if (cf.length != 16)
     {
-        //"azzera" il colore di tutti gli altri campi e mette rosso solo quello sbagliato.
-        //distinzione reg-pers per sapere quali campi sbiancare (il form è uno solo)
         if(user == "reg")
             blankPharmacyFields();
         else
             blankPersonnelFields();
 
-        alert("Codice Fiscale non valido!");
+        alert("Invalid Fiscal Code!");
         document.getElementById("cf").style.backgroundColor = "red";
         return false;
     }
@@ -65,7 +61,7 @@ function validatePassword(pass1, pass2, user)
         else
             blankPersonnelFields();
 
-        alert("Le password non corrispondono");
+        alert("Passwords are different");
         document.getElementById("password").style.backgroundColor = "red";
         document.getElementById("passwordConfirm").style.backgroundColor = "red";
         return false;
@@ -165,7 +161,3 @@ function validatePharmacyForm()
     return ret;
 }
 
-function validatePrescriptionForm()
-{
-    alert("Validating...");
-}

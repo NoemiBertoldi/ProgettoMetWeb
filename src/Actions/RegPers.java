@@ -1,16 +1,16 @@
 package Actions;
 
+import Beans.LoginBean;
 import Beans.PersBean;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import util.DbConnection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -20,36 +20,25 @@ public class RegPers extends Action
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         PersBean bean = (PersBean) form;
-        HttpSession session;
-        Connection connection = null;
-        Statement st = null;
+        Statement statement = null;
         ResultSet resultSet;
-        String username = "", password = "", role = "", cf = "", nome = "", cognome = "", codReg = "";
-        String indirizzo = "", telefono = "", nomeF = "", dataNascita = "";
+        String username, password, role, cf, nome, cognome;
+        String dataNascita;
 
-        try
+        Connection connection= DbConnection.connect();
+        if(connection==null)
         {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/MetWeb_tab", "fedora", "fedora");
-        }
-        catch (Exception e)
-        {
-            System.out.println("No DB connection");
-            e.printStackTrace();
-            connection.close();
-
             request.setAttribute("exitCode", "No DB connection");
             return mapping.findForward("REGISTER_FAIL");
         }
 
         try
         {
-            st = connection.createStatement();
+            statement = connection.createStatement();
             username = bean.getUsername();
 
-            //prima cerca se username esiste già
             String query = "SELECT * FROM Operatori WHERE username = '" + username + "'";
-            resultSet = st.executeQuery(query);
+            resultSet = statement.executeQuery(query);
             int conta = 0;
 
             while(resultSet.next())
@@ -66,13 +55,20 @@ public class RegPers extends Action
             cf = bean.getCf();
             nome = bean.getNome();
             cognome = bean.getCognome();
-            codReg = bean.getCodRegionale();
             dataNascita = bean.getDataNascita();
 
-            query = "INSERT INTO Operatori (cf, ruolo, nome, cognome, dataNascita, codRegionale, username, pass) values ("
-                    + "'" + cf + "', " + "'" + role + "', " + "'" + nome + "', " + "'" + cognome + "', " + "'" + dataNascita + "', "
-                    + "'" + codReg + "', " + "'" + username + "', " + "'" + password + "')";
-            st.executeUpdate(query);
+            String username_tit = ((LoginBean) request.getSession().getAttribute("LoginBean")).getUsername();
+            query = "SELECT * FROM Operatori WHERE username = '" + username_tit + "'";
+            resultSet = statement.executeQuery(query);
+
+            int idFarmacia = 0;
+            while(resultSet.next())
+                idFarmacia = resultSet.getInt("idFarmacia");
+
+            query = "INSERT INTO Operatori (cf, idFarmacia, ruolo, nome, cognome, dataNascita, username, pass) values ("
+                    + "'" + cf + "', " + idFarmacia + ", " + "'" + role + "', " + "'" + nome + "', " + "'" + cognome + "', " + "'" + dataNascita + "', "
+                    + "'" + username + "', " + "'" + password + "')";
+            statement.executeUpdate(query);
 
             request.setAttribute("exitCode", "Successfully Registered");
             return mapping.findForward("REGISTER_OK");
