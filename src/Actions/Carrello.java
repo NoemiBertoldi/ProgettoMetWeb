@@ -25,15 +25,15 @@ public class Carrello extends Action
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
-        PresBean recBean;
+        PresBean presBean;
         ProdBean prodBean;
-        boolean conRicetta = true;
-        String query, username, cf = "", codProdotto = "", role = "", acquistoDate = "";
-        Prescription ricetta;
-        int oldQty = -1, qty = 0, codAcquisto = -1, idFarmacia = -1;
+        boolean needsPres = true;
+        String query, username, cf="", codProdotto="", role, purchaseDate;
+        Prescription prescription;
+        int oldQty = -1, qty = 0, codAcquisto = -1, idFarmacia = -1, cartId=-1;
         ResultSet table;
         TableReader reader = new TableReader();
-        Acquista acquisto = (Acquista) request.getSession().getAttribute("cart");
+        Acquista purch = (Acquista) request.getSession().getAttribute("cart");
         Date date = new Date();
         SimpleDateFormat PrescriptionDateFormatter = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat todaysDateFormatter = new SimpleDateFormat("dd-MM-yyyy kk:mm:ss");
@@ -41,54 +41,45 @@ public class Carrello extends Action
 
         try
         {
-            ricetta = (Prescription) request.getSession().getAttribute("ricetta");
+            prescription = (Prescription) request.getSession().getAttribute("ricetta");
 
-            if(ricetta == null)
+            if(prescription == null)
             {
                 prodBean = (ProdBean) form;
                 codProdotto = prodBean.getProductName();
-                try
-                {
-                    qty = Integer.parseInt(prodBean.getQty());
-                }
-                catch(Exception e)
-                {
-                    request.getSession().setAttribute("msg", "QUANTITA' INSERITA NON CORRETTA");
-                    return mapping.findForward("ADD_OK");
-                }
+
                 query = "SELECT conRicetta FROM Prodotti WHERE codProdotto = '" + codProdotto + "'";
                 table = reader.getTable(query);
 
                 while (table.next())
-                    conRicetta = table.getBoolean("conRicetta");
+                    needsPres = table.getBoolean("conRicetta");
 
                 role = (String) request.getSession().getAttribute("role");
 
-                if(conRicetta)
+                if(needsPres)
                 {
                     if (role.toLowerCase().equals("ob"))
                     {
-                        request.getSession().setAttribute("msg", "OPERATORE DI BANCO NON PUO' VENDERE UN PRODOTTO CON RICETTA!");
-                        return mapping.findForward("ADD_OK");
+                        request.getSession().setAttribute("msg", "Bench operator can't sell a drug that needs prescription");
+                        return mapping.findForward("ERROR");
                     }
 
                     else
                     {
                         request.getSession().setAttribute("ricetta", new Prescription(codProdotto, qty));
-                        return mapping.findForward("NEED_Prescription");
+                        return mapping.findForward("NEED_PRES");
                     }
                 }
             }
             else
             {
-                recBean = (PresBean) form;
-                codProdotto = ricetta.getCodProdotto();
-                qty = ricetta.getQty();
+                codProdotto = prescription.getCodProdotto();
+                qty = prescription.getQty();
             }
 
-            if (acquisto == null)
+            if (purch == null)
             {
-                username = ((LoginBean) request.getSession().getAttribute("RegisterBean")).getUsername();
+                username = ((LoginBean) request.getSession().getAttribute("LoginBean")).getUsername();
                 query = "SELECT cf, idFarmacia FROM Operatori WHERE username = '" + username + "'";
                 table = reader.getTable(query);
 
@@ -98,22 +89,22 @@ public class Carrello extends Action
                     idFarmacia = table.getInt("idFarmacia");
                 }
 
-                acquistoDate = todaysDateFormatter.format(date);
+                purchaseDate = todaysDateFormatter.format(date);
                 query = "INSERT INTO acquisti(cfoperatore, totale, data, completato) " +
-                        "VALUES ('" + cf + "', 0, '" + acquistoDate + "', false)";
+                        "VALUES ('" + cf + "', 0, '" + purchaseDate + "', false)";
                 reader.update(query);
 
-                acquisto = new Acquista(cf, acquistoDate, idFarmacia);
-                request.getSession().setAttribute("cart", acquisto);
+                purch = new Acquista(cf, purchaseDate, idFarmacia);
+                request.getSession().setAttribute("cart", purch);
             }
             else
             {
-                cf = acquisto.getCfOp();
-                acquistoDate = acquisto.getFormatDate();
-                idFarmacia = acquisto.getIdFarmacia();
+                cf = purch.getCfOp();
+                purchaseDate = purch.getFormatDate();
+                idFarmacia = purch.getIdFarmacia();
             }
 
-            query = "SELECT codAcquisto FROM acquisti WHERE cfOperatore = '" + cf + "' AND data = '" + acquistoDate + "'";
+            query = "SELECT codAcquisto FROM acquisti WHERE cfOperatore = '" + cf + "' AND data = '" + purchaseDate + "'";
             table = reader.getTable(query);
 
             while (table.next())
@@ -139,13 +130,19 @@ public class Carrello extends Action
 
             if(oldQty < qty)
             {
-                request.getSession().setAttribute("msg", "DISPONIBILITÀ SUPERATA!");
-                return mapping.findForward("ADD_OK");
+                request.getSession().setAttribute("msg", "You selected too many products!");
+                return mapping.findForward("ERROR");
             }
 
             query = "INSERT INTO carrello (codprodotto, quantita, codacquisto)" +
                     " VALUES ('" + codProdotto + "', " + qty + ", " + codAcquisto + ");";
             reader.update(query);
+
+            query = "SELECT id FROM Carrello WHERE codprodotto = '" + codProdotto + "' AND"
+                    + " quantita = " + qty + " AND codacquisto = " + codAcquisto;
+            table = reader.getTable(query);
+            while (table.next())
+                cartId = table.getInt("id");
 
             query = "SELECT prezzo FROM Prodotti WHERE codProdotto = '" + codProdotto + "'";
             table = reader.getTable(query);
@@ -156,34 +153,35 @@ public class Carrello extends Action
             query = "UPDATE Acquisti SET totale = " + total + " WHERE codAcquisto = '" + codAcquisto + "'";
             reader.update(query);
 
-            if(ricetta != null)
+            if(prescription != null)
             {
-                recBean = (PresBean) form;
+                presBean = (PresBean) form;
                 String cfPaz, nome, cognome, dataNascita, codReg;
-                int conta = 0;
+                int count = 0;
 
-                cfPaz = recBean.getCfPaz();
-                nome = recBean.getNomePaz();
-                cognome = recBean.getCognomePaz();
-                dataNascita = recBean.getDataNascitaPaz();
-                codReg = recBean.getCodRegMed();
+                cfPaz = presBean.getCfPaz();
+                nome = presBean.getNomePaz();
+                cognome = presBean.getCognomePaz();
+                dataNascita = presBean.getDataNascitaPaz();
+                codReg = presBean.getCodRegMed();
 
-                query = "INSERT INTO ricette(codricetta, codacquisto, codregionale, data)"+
-                        " VALUES ('" + (codAcquisto + "," + codReg + PrescriptionDateFormatter.format(date)) +"', '" + codAcquisto +"', '" + codReg + "', '" + todaysDateFormatter.format(date) + "')";
+                query = "INSERT INTO ricette(codricetta, idCarrello, codregionale, data)"+
+                        " VALUES ('" + (codAcquisto + "," + codReg +
+                        PrescriptionDateFormatter.format(date)) +"', '" + cartId +"', '" + codReg + "', '" + todaysDateFormatter.format(date) + "')";
 
                 if(! reader.update(query))
                 {
-                    request.getSession().setAttribute("msg", "MEDICO NON TROVATO! ");
+                    request.getSession().setAttribute("msg", "Doctor Not Found! ");
                     revertChanges(request, cf, idFarmacia, codProdotto, codAcquisto, oldQty);
-                    return mapping.findForward("ADD_OK");
+                    return mapping.findForward("ERROR");
                 }
 
                 query = "SELECT * FROM Pazienti WHERE cf = '" + cfPaz + "'";
                 table = reader.getTable(query);
                 while (table.next())
-                    conta++;
+                    count++;
 
-                if(conta == 0)
+                if(count == 0)
                 {
                     query = "INSERT INTO pazienti(cf, codacquisto, nome, cognome, datanascita)" +
                             " VALUES ('" + cfPaz + "', " + codAcquisto + ", '" + nome + "', '" + cognome + "', '" + dataNascita + "')";

@@ -150,6 +150,7 @@ table th
 table td
 {
     border: 1px solid black;
+    text-align: center;
 }
 a:link
 {
