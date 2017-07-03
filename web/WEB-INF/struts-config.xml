@@ -47,7 +47,7 @@
         </action>
 
         <action path="/mail" type = "Actions.InviaMail" name="MailBean" scope="request">
-            <forward name="SEND_OK" path="/jsp/mail.jsp" />
+            <forward name="SEND_OK" path="/jsp/sent.jsp" />
             <forward name="ERROR" path="/jsp/error.jsp" />
         </action>
     </action-mappings>

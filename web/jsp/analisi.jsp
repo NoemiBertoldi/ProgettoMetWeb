@@ -5,32 +5,34 @@
 <html>
 <head>
     <title>Analysis</title>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/home.css">
     <%
         String role="";
     %>
     <%
-        if(! (LoginCheck.check((LoginBean) session.getAttribute("LoginBean"), request, null).equals("LOGIN_OK")))
+        if( (LoginCheck.check((LoginBean) session.getAttribute("LoginBean"), request, null).equals("LOGIN_OK")))
+        {
+            role=(String) request.getSession().getAttribute("role");
+            if((! role.equalsIgnoreCase("reg")) && (! role.equalsIgnoreCase("tf")))
+            {
+                request.setAttribute("exitCode", "This area is reserved to: REG and TF");
+    %>
+    <script type="text/javascript">
+        window.location.replace('<%=request.getContextPath()%>/error.jsp');
+    </script>
+    <%
+        }
+    }
+        else
         {
     %>
-
     <script type="text/javascript">
         window.location.replace('<%=request.getContextPath()%>/jsp/error.jsp');
     </script>
     <%
         }
     %>
-    <%
-        role=(String) request.getSession().getAttribute("role");
-        if((! role.equals("reg")) && (! role.equals("tf")))
-        {
-            request.setAttribute("exitCode", "This area is reserved to: REG and TF");
-    %>
-        <script type="text/javascript">
-            window.location.replace('error.jsp');
-        </script>
-    <%
-        }
-    %>
+
 
 </head>
 <body>
@@ -38,9 +40,9 @@
 <div id="container">
 
     <div id="header">
-        <% if(role.equals("pers")) {%>
+        <% if(role.equalsIgnoreCase("tf")) {%>
         <h1>Pharmacy Sales Analysis</h1>
-        <%} else if(role.equals("reg")) {%>
+        <%} else if(role.equalsIgnoreCase("reg")) {%>
         <h1>Pharmacies Sales Analysis</h1>
         <% } %>
     </div>
@@ -64,12 +66,13 @@
                 <%
                     try
                     {
-                        LoginBean bean = ((LoginBean) session.getAttribute("LoginBean"));
+                        String username = ((LoginBean)session.getAttribute("LoginBean")).getUsername();
                         Analisi a = null;
+
                         if(role.equalsIgnoreCase("tf"))
-                            a = new Analisi(bean.getUsername(), "tf");
+                            a = new Analisi(username, "tf");
                         else if(role.equalsIgnoreCase("reg"))
-                            a = new Analisi(bean.getUsername(), "reg");
+                            a = new Analisi(username, "reg");
                 %>
                 <tr>
                     <td><%= a.getAcqTotali() %></td>

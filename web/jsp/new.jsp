@@ -51,11 +51,11 @@
                         {
                     %>
                     <input type="checkbox" name="username" value="regPiemonte">Regione Piemonte
+
+
                     <%
+
                         }
-
-                    <%
-
                         }
                         catch (Exception e)
                         { }

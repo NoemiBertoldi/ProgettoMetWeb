@@ -23,15 +23,16 @@
         <div id="elenco" class="right">
 
             <%
+                int i=0;
             try
             {
                 TableReader reader = new TableReader();
                 LoginBean bean = ((LoginBean) session.getAttribute("LoginBean"));
                 ResultSet table = reader.buildSentTable(role, bean.getUsername());
-                int i=0;
+
                 String username, dest;
 
-                while(table.next())
+                while(table.getString("msg")!=null)
                 {
                     i++;
             %>
@@ -82,8 +83,15 @@
                 catch(Exception e)
                 {
 
+                }%>
+            <%
+                if(i == 0)
+                {
+            %>
+            <h3 style="text-align: center">NO MAIL SENT. Do you want to send a new mail? <a href="<%=request.getContextPath()%>/jsp/new.jsp">Here's the link!</a></h3>
+            <%
                 }
-                    %>
+            %>
         </div>
         <div class="clear"/>
     </div>
