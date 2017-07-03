@@ -47,7 +47,15 @@ public class Carrello extends Action
             {
                 prodBean = (ProdBean) form;
                 codProdotto = prodBean.getProductName();
-
+                try
+                {
+                    qty=Integer.parseInt(prodBean.getQty());
+                }
+                catch (Exception e)
+                {
+                    request.getSession().setAttribute("msg","Invalid quantity");
+                    return mapping.findForward("ERROR");
+                }
                 query = "SELECT conRicetta FROM Prodotti WHERE codProdotto = '" + codProdotto + "'";
                 table = reader.getTable(query);
 
@@ -202,7 +210,7 @@ public class Carrello extends Action
 
             revertChanges(request, cf, idFarmacia, codProdotto, codAcquisto, oldQty);
 
-            request.getSession().setAttribute("exitCode", "ERRORE AGGIUNTA AL CARRELLO");
+            request.getSession().setAttribute("exitCode", "Add To Cart Error");
             return mapping.findForward("ERROR");
         }
 

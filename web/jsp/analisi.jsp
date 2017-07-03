@@ -1,5 +1,6 @@
 <%@ page import="Beans.LoginBean" %>
 <%@ page import="util.Analisi" %>
+<%@ page import="util.LoginCheck" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -7,7 +8,17 @@
     <%
         String role="";
     %>
-    <jsp:include page="../util/login.jsp"/>
+    <%
+        if(! (LoginCheck.check((LoginBean) session.getAttribute("LoginBean"), request, null).equals("LOGIN_OK")))
+        {
+    %>
+
+    <script type="text/javascript">
+        window.location.replace('<%=request.getContextPath()%>/jsp/error.jsp');
+    </script>
+    <%
+        }
+    %>
     <%
         role=(String) request.getSession().getAttribute("role");
         if((! role.equals("reg")) && (! role.equals("tf")))
@@ -55,10 +66,9 @@
                     {
                         LoginBean bean = ((LoginBean) session.getAttribute("LoginBean"));
                         Analisi a = null;
-
-                        if(role.equals("tf"))
+                        if(role.equalsIgnoreCase("tf"))
                             a = new Analisi(bean.getUsername(), "tf");
-                        else if(role.equals("reg"))
+                        else if(role.equalsIgnoreCase("reg"))
                             a = new Analisi(bean.getUsername(), "reg");
                 %>
                 <tr>

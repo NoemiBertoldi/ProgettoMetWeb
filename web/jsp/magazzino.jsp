@@ -62,18 +62,32 @@
                 <td><%= table.getString("nome") %></td>
                 <td><%= table.getString("descrizione") %></td>
                 <td><%= table.getString("quantitaDisponibile") %></td>
-                <td><%= table.getBoolean("conRicetta") %></td>
+                <td><%= table.getBoolean("conRicetta") %><%
+                    if(table.getBoolean("conRicetta"))
+                    {
+                %>
+                    &#10004;
+                    <%
+                    }
+                    else
+                    {
+                    %>
+                    &#10008;
+                    <%
+                        }
+                    %>
+                </td>
                 <%
                     if(role.toLowerCase().equals("tf"))
                     {
                 %>
                     <form action="<%=request.getContextPath()%>/riempiMag.do" method="post" name="form">
                 <td>
-                    <input type="number" name="quantita" id="quantita" min="1" max="50">
+                    <input type="number" name="qty" id="qty" min="1" max="50">
                 </td>
                 <td>
                     <input type="submit" value="Order">
-                    <input type="text" name="productName" id="productName" value="<%= table.getString("nome") %>"
+                    <input type="text" name="nomeprodotto" id="nomeprodotto" value="<%= table.getString("nome") %>"
                        style="visibility:hidden">
                 </td>
                     </form>

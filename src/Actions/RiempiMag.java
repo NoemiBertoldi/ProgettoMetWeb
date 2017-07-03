@@ -17,10 +17,12 @@ public class RiempiMag extends Action
         String query, nomeprodotto, username, codprod="";
         int qty = -1, farm = -1, oldQty=0;
         ResultSet table;
+
         TableReader reader = new TableReader();
         nomeprodotto = bean.getNomeprodotto();
         qty= Integer.parseInt(bean.getQty());
         username= ((LoginBean) request.getSession().getAttribute("LoginBean")).getUsername();
+
         query = "SELECT idfarmacia FROM operatori WHERE username ='"+username+"'";
         table = reader.getTable(query);
         while(table.next())
@@ -43,7 +45,7 @@ public class RiempiMag extends Action
             return mapping.findForward("RIEMPI_OK");
         else
         {
-            request.setAttribute("exitCode","Errore Ordine");
+            request.setAttribute("exitCode","Order Error");
             return mapping.findForward("ERROR");
         }
     }

@@ -9,6 +9,7 @@ body
 {
     background-image: url('../src/health.jpg');
     background-size:cover;
+    font-family: Comfortaa;
 }
 #header
 {
