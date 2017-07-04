@@ -15,6 +15,7 @@
     }
     catch(Exception e)
     {
+        e.printStackTrace();
         errorMsg = "Couldn't log in";
     }
 %>

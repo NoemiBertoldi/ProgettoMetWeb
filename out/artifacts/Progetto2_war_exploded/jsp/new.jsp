@@ -45,13 +45,16 @@
                     <%
 
                         }
+
+                    %>
+                    <div class="tright">
+                        <%
                             while(table.next())
                             {
                                 username = table.getString("username");
                                 if(!reg && username.equals(userUsername))
                                     continue;
-                    %>
-                    <div class="tright">
+                        %>
                     <input type="checkbox" name="username" value="<%= username %>"><%= username %>
                 <%
                         }

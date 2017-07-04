@@ -19,7 +19,7 @@ public class InviaMail extends Action
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         MailBean bean = (MailBean) form;
-        LoginBean login = (LoginBean) request.getSession().getAttribute("RegisterBean");
+        LoginBean login = (LoginBean) request.getSession().getAttribute("LoginBean");
         String[] dests;
         String obj, msg, data, query = "", username, role, dest;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -75,6 +75,7 @@ public class InviaMail extends Action
         }
         catch(Exception e)
         {
+            e.printStackTrace();
             request.getSession().setAttribute("exitCode", "Mail Error ");
             return mapping.findForward("ERROR");
         }

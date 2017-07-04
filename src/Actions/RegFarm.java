@@ -1,17 +1,15 @@
 package Actions;
 
-import util.DbConnection;
 import Beans.FarmBean;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import util.TableReader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 public class RegFarm extends Action
 {
@@ -19,21 +17,14 @@ public class RegFarm extends Action
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         FarmBean bean = (FarmBean) form;
-        Statement statement = null;
         ResultSet resultSet;
         String username, password, role, cf, nome, cognome;
-        String indirizzo = "", telefono = "", nomeF = "", dataNascita = "";
-
-        Connection connection=DbConnection.connect();
-        if(connection==null)
-        {
-            request.setAttribute("exitCode", "No DB connection");
-            return mapping.findForward("REGISTER_FAIL");
-        }
+        String indirizzo, telefono, nomeF, dataNascita;
+        TableReader reader;
 
         try
         {
-            statement = connection.createStatement();
+            reader = new TableReader();
             username = bean.getUsername();
             password = bean.getPassword();
             role = "TF";
@@ -47,49 +38,60 @@ public class RegFarm extends Action
 
             String query = "SELECT * FROM Farmacie WHERE nome = '" + nomeF + "'" + " AND indirizzo = '" + indirizzo +
                     "' AND telefono = '" + telefono + "'";
-            resultSet = statement.executeQuery(query);
-            int conta = 0;
+            resultSet = reader.getTable(query);
+            int count = 0;
 
             while(resultSet.next())
-                conta++;
+                count++;
 
-            if(conta != 0)
+            if(count != 0)
             {
                 request.setAttribute("exitCode", "This Pharmacy already exists");
-                return mapping.findForward("REGISTER");
+                return mapping.findForward("REGISTER_FAIL");
             }
 
-            query= "SELECT * FROM operatori WHERE username='"+username+"'";
-            resultSet= statement.executeQuery(query);
-            conta=0;
+            query = "SELECT * FROM Operatori WHERE username = '" + username + "'";
+            resultSet = reader.getTable(query);
+            count = 0;
+
             while(resultSet.next())
-                conta++;
-            if(conta!=0)
+                count++;
+
+            if(count != 0)
             {
                 request.setAttribute("exitCode", "Staff member alredy exists");
-                return mapping.findForward("REGISTER_OK");
+                return mapping.findForward("REGISTER_FAIL");
             }
 
             query = "INSERT INTO Farmacie (nome, indirizzo, telefono) VALUES ("
                     + "'" + nomeF + "', " + "'" + indirizzo + "', " + "'" + telefono + "')";
-            statement.executeUpdate(query);
+            reader.update(query);
 
-            query = "SELECT id FROM Farmacie WHERE nome = '" + nomeF + "' AND indirizzo = '" + indirizzo +
-                    "' AND telefono = '" + telefono + "'";
-
-            resultSet = statement.executeQuery(query);
+            query = "SELECT id FROM Farmacie WHERE nome = '" + nomeF + "' AND indirizzo = '" + indirizzo + "' AND telefono = '" + telefono + "'";
+            resultSet = reader.getTable(query);
             int idFarmacia = 0;
-
             while(resultSet.next())
                 idFarmacia = resultSet.getInt("id");
 
-            query = "INSERT INTO Operatori (cf, idFarmacia, ruolo, nome, cognome, dataNascita,  username, password) " +
-                    "values ("
-                    + "'" + cf + "', " + "'" + idFarmacia + "', " + "'" + role + "', " + "'" + nome + "', " +
-                    "'" + cognome + "', " + "'" + dataNascita + "', "+
-                    "'" + username + "', " + "'" + password + "')";
-            statement.executeUpdate(query);
 
+            query = "INSERT INTO Operatori (cf, idFarmacia, ruolo, nome, cognome, dataNascita, username, pass) values ("
+                    + "'" + cf + "', " + "'" + idFarmacia + "', " + "'" + role + "', " + "'" + nome + "', " + "'" + cognome + "', " + "'" + dataNascita + "', "
+                    + "'" + username + "', " + "'" + password + "')";
+            reader.update(query);
+
+            int i = 0;
+            query = "SELECT codProdotto FROM Prodotti";
+            resultSet = reader.getTable(query);
+
+            query = "INSERT INTO magazzino(idfarmacia, codprodotto, quantitadisponibile) VALUES ";
+            while(resultSet.next())
+            {
+                if(i != 0)
+                    query += ", ";
+                query += "(" + idFarmacia + ", '" + resultSet.getString("codProdotto") + "', 0)";
+                i++;
+            }
+            reader.update(query);
 
             request.setAttribute("exitCode", "Successfully Registered");
             return mapping.findForward("REGISTER_OK");
@@ -98,7 +100,6 @@ public class RegFarm extends Action
         {
             System.out.println("Query Error");
             e.printStackTrace();
-            connection.close();
 
             request.setAttribute("exitCode", "Invalid SQL query");
             return mapping.findForward("REGISTER_FAIL");

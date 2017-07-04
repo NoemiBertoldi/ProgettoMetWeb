@@ -32,77 +32,64 @@
             <jsp:include page="../util/menu.jsp"/>
         </div>
         <div id="elenco" class="right">
+            <table>
+                <tr>
+                    <th>Receiver</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Message</th>
+                </tr>
 
             <%
-                int i=0;
             try
             {
                 TableReader reader = new TableReader();
                 LoginBean bean = ((LoginBean) session.getAttribute("LoginBean"));
                 ResultSet table = reader.buildSentTable(role, bean.getUsername());
-
                 String username, dest;
-
-                while(table.getString("msg")!=null)
+                int i = 0;
+                while(table.next())
                 {
                     i++;
             %>
-
-            <div class="clear">
-                <div class="tleft">
-                    <b>Receiver: </b>
-                    <%
-                        dest = table.getString("fromOp");
+            <tr>
+                <td>
+                   <%
+                        dest = table.getString("toOp");
                         if(dest == null)
-                            dest = table.getString("fromReg");
+                            dest = table.getString("toReg");
                     %>
-                </div>
-                <div class="tright">
                     <%= dest %>
-                </div>
-            </div>
+                </td>
 
-            <div class="clear">
-                <div class="tleft">
-                    <b>Subject: </b>
-                </div>
-                <div class="tright">
+                <td>
                     <%= table.getString("oggetto") %>
-                </div>
-            </div>
-
-            <div class="clear">
-                <div class="tleft">
-                    <b>Date: </b>
-                </div>
-                <div class="tright">
+                </td>
+                <td>
                     <%= table.getString("dt_invio") %>
-                </div>
-            </div>
-
-            <div class="clear">
-                <div class="tleft">
-                    <b>Message: </b>
-                </div>
-                <div class="tright">
+                </td>
+                <td>
                     <%= table.getString("msg") %>
-                </div>
-            </div>
-                        <%
+                </td>
+            </tr>
+             <%
                     }
+                    %>
+            </table>
+            <%
+                    if(i == 0)
+                {
+            %>
+                <h3 style="text-align: center">NO MAIL SENT. Do you want to send a new mail? <a href="<%=request.getContextPath()%>/jsp/new.jsp">Here's the link!</a></h3>
+                    <%
+                }
+
                 }
                 catch(Exception e)
                 {
 
                 }%>
-            <%
-                if(i == 0)
-                {
-            %>
-            <h3 style="text-align: center">NO MAIL SENT. Do you want to send a new mail? <a href="<%=request.getContextPath()%>/jsp/new.jsp">Here's the link!</a></h3>
-            <%
-                }
-            %>
+
         </div>
         <div class="clear"/>
     </div>
