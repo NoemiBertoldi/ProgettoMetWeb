@@ -30,6 +30,7 @@
                     <%
                         try
                         {
+
                             TableReader reader = new TableReader();
                             LoginBean bean = ((LoginBean) session.getAttribute("LoginBean"));
                             String userUsername = bean.getUsername();
@@ -37,6 +38,13 @@
                             String username;
                             boolean reg = role.equals("reg");
 
+                            if(role.equals("tf"))
+                            {
+                    %>
+                            <input type="checkbox" name="username" value="regPiemonte" checked>Regione Piemonte
+                    <%
+
+                        }
                             while(table.next())
                             {
                                 username = table.getString("username");
@@ -45,31 +53,22 @@
                     %>
                     <div class="tright">
                     <input type="checkbox" name="username" value="<%= username %>"><%= username %>
-                    <%
+                <%
                         }
-                        if(role.equals("tf"))
-                        {
-                    %>
-                    <input type="checkbox" name="username" value="regPiemonte">Regione Piemonte
-                    <%
-                        }
-
-                    <%
-
-                        }
+                    }
                         catch (Exception e)
                         { }
                     %>
                     </div>
                 </div>
-
+                <br><br>
                 <div class="clear">
                     <div class="tleft">Subject</div>
                     <div class="tright"><input type="text" name="obj" id="sub" required></div>
                 </div>
                 <div class="clear">
                     <div class="tleft">Text</div>
-                    <div class="tright"><input type="text" name="text" id="text" required></div>
+                    <div class="tright"><textarea name="text" id="text" rows="10" cols="50" required></textarea></div>
                 </div>
                 <br>
                 <br>

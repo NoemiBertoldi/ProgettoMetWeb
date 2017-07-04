@@ -1,12 +1,23 @@
 <%@ page import="util.TableReader" %>
 <%@ page import="Beans.LoginBean" %>
 <%@ page import="java.sql.ResultSet" %>
+<%@ page import="util.LoginCheck" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Inbox Mail</title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/home.css">
-    <jsp:include page="../util/login.jsp"/>
+    <%
+        if(! (LoginCheck.check((LoginBean) session.getAttribute("LoginBean"), request, null).equals("LOGIN_OK")))
+        {
+    %>
+
+    <script type="text/javascript">
+        window.location.replace('<%=request.getContextPath()%>/jsp/error.jsp');
+    </script>
+    <%
+        }
+    %>
     <%
         String role = ((String) request.getSession().getAttribute("role")).toLowerCase();
     %>
@@ -39,7 +50,7 @@
 
             <div class="clear">
                 <div class="tleft">
-                    <b>Sender: </b>
+                    <b>Receiver: </b>
                     <%
                         dest = table.getString("fromOp");
                         if(dest == null)

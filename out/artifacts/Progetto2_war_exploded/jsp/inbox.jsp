@@ -22,13 +22,14 @@
         </div>
         <div id="elenco" class="right">
             <%
+                int i=0;
             try
             {
                 TableReader reader = new TableReader();
                 LoginBean bean = ((LoginBean) session.getAttribute("LoginBean"));
                 ResultSet table = reader.buildInboxTable(role, bean.getUsername());
                 String username, mitt;
-                int i=0;
+
                 while(table.next())
                 {
                     i++;
@@ -80,7 +81,13 @@
             {
 
             }
-        %>
+                    if(i == 0)
+                    {
+                %>
+            <h3 style="text-align: center">You haven't received any email</h3>
+            <%
+                }
+            %>
         </div>
         <div class="clear"/>
     </div>
