@@ -32,13 +32,7 @@
             <jsp:include page="../util/menu.jsp"/>
         </div>
         <div id="elenco" class="right">
-            <table>
-                <tr>
-                    <th>Receiver</th>
-                    <th>Subject</th>
-                    <th>Date</th>
-                    <th>Message</th>
-                </tr>
+
 
             <%
             try
@@ -52,6 +46,13 @@
                 {
                     i++;
             %>
+            <table>
+                <tr>
+                    <th>Receiver</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Message</th>
+                </tr>>
             <tr>
                 <td>
                    <%

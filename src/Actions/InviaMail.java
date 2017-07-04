@@ -10,6 +10,7 @@ import util.TableReader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -21,9 +22,10 @@ public class InviaMail extends Action
         MailBean bean = (MailBean) form;
         LoginBean login = (LoginBean) request.getSession().getAttribute("LoginBean");
         String[] dests;
-        String obj, msg, data, query = "", username, role, dest;
+        String obj, msg, data, query = "", username, role, dest, tf = "", queryTf;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         TableReader reader = new TableReader();
+        ResultSet table;
 
         try
         {
@@ -33,14 +35,22 @@ public class InviaMail extends Action
             obj = bean.getObj();
             msg = bean.getText();
             data = dateFormat.format(new Date());
-
             if(dests.length > 0)
             {
                 dest = dests[0];
+
                 if(role.toLowerCase().equals("reg"))
                 {
-                   query = "INSERT INTO messaggi(dt_invio, fromreg, toreg, fromop, toop, oggetto, msg)\n" +
-                            "    VALUES ('" + data + "', '" + username + "', null, null, '" + dest + "', '" + obj + "', '" + msg + "')";
+                    queryTf = "SELECT Operatori.username FROM Operatori JOIN Farmacie"
+                            + " ON Operatori.idFarmacia = Farmacie.id"
+                            + " WHERE Operatori.ruolo = 'TF' AND Farmacie.nome = '" + dest + "'";
+                    table = reader.getTable(queryTf);
+
+                    while(table.next())
+                        tf = table.getString("username");
+
+                    query = "INSERT INTO messaggi(dt_invio, fromreg, toreg, fromop, toop, oggetto, msg)\n" +
+                            "    VALUES ('" + data + "', '" + username + "', null, null, '" + tf + "', '" + obj + "', '" + msg + "')";
 
                 }
                 else
@@ -48,7 +58,6 @@ public class InviaMail extends Action
                     if(dest.toLowerCase().startsWith("reg"))
                         query = "INSERT INTO messaggi(dt_invio, fromreg, toreg, fromop, toop, oggetto, msg)\n" +
                                 "    VALUES ('" + data + "', null, '" + dest + "', '" + username + "', null, '" + obj + "', '" + msg + "')";
-
                     else
                         query = "INSERT INTO messaggi(dt_invio, fromreg, toreg, fromop, toop, oggetto, msg)\n" +
                                 "    VALUES ('" + data + "', null, null, '" + username + "', '" + dest + "', '" + obj + "', '" + msg + "')";
@@ -59,7 +68,16 @@ public class InviaMail extends Action
                     dest = dests[i];
                     if(role.toLowerCase().equals("reg"))
                     {
-                        query += ", ('" + data + "', '" + username + "', null, null, '" + dest + "', '" + obj + "', '" + msg + "')";
+                        queryTf = "SELECT Operatori.username FROM Operatori JOIN Farmacie"
+                                + " ON Operatori.idFarmacia = Farmacie.id"
+                                + " WHERE Operatori.ruolo = 'TF' AND Farmacie.nome = '" + dest + "'";
+                        table = reader.getTable(queryTf);
+
+                        while(table.next())
+                            tf = table.getString("username");
+
+
+                        query += ", ('" + data + "', '" + username + "', null, null, '" + tf + "', '" + obj + "', '" + msg + "')";
                     }
                     else
                     {
@@ -71,16 +89,22 @@ public class InviaMail extends Action
                     }
                 }
             }
+            else
+            {
+                request.getSession().setAttribute("msg", "No receiver selected! ");
+                return mapping.findForward("ERROR");
+            }
+
+
             reader.update(query);
         }
         catch(Exception e)
         {
-            e.printStackTrace();
-            request.getSession().setAttribute("exitCode", "Mail Error ");
+            request.getSession().setAttribute("exitCode", "Mail error ");
             return mapping.findForward("ERROR");
         }
 
-        request.getSession().setAttribute("msg", "Mail Sent! ");
+        request.getSession().setAttribute("msg", "Mail sent! ");
         return mapping.findForward("SEND_OK");
     }
 

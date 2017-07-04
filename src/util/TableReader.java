@@ -12,7 +12,7 @@ public class TableReader {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/MetWeb_tab", "fedora", "fedora");
         } catch (Exception e) {
-            System.out.println("Errore connessione al DB");
+            System.out.println("No db connection");
             e.printStackTrace();
             connection.close();
         }
@@ -23,7 +23,7 @@ public class TableReader {
             st = connection.createStatement();
             resultSet = st.executeQuery(query);
         } catch (Exception e) {
-            System.out.println("Errore nella query");
+            System.out.println("Query Error");
             e.printStackTrace();
             connection.close();
 
