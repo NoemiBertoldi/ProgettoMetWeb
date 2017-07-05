@@ -56,11 +56,11 @@ public class Carrello extends Action
                     request.getSession().setAttribute("msg","Invalid quantity");
                     return mapping.findForward("ERROR");
                 }
-                query = "SELECT conRicetta FROM Prodotti WHERE codProdotto = '" + codProdotto + "'";
+                query = "SELECT needspres FROM products WHERE codprod = '" + codProdotto + "'";
                 table = reader.getTable(query);
 
                 while (table.next())
-                    needsPres = table.getBoolean("conRicetta");
+                    needsPres = table.getBoolean("needspres");
 
                 role = (String) request.getSession().getAttribute("role");
 
@@ -88,17 +88,17 @@ public class Carrello extends Action
             if (purch == null)
             {
                 username = ((LoginBean) request.getSession().getAttribute("LoginBean")).getUsername();
-                query = "SELECT cf, idFarmacia FROM Operatori WHERE username = '" + username + "'";
+                query = "SELECT cf, idpharm FROM personnel WHERE username = '" + username + "'";
                 table = reader.getTable(query);
 
                 while (table.next())
                 {
                     cf = table.getString("cf");
-                    idFarmacia = table.getInt("idFarmacia");
+                    idFarmacia = table.getInt("idpharm");
                 }
 
                 purchaseDate = todaysDateFormatter.format(date);
-                query = "INSERT INTO acquisti(cfoperatore, totale, data, completato) " +
+                query = "INSERT INTO purchases(cfpers, total, datep, completed) " +
                         "VALUES ('" + cf + "', 0, '" + purchaseDate + "', false)";
                 reader.update(query);
 
@@ -112,22 +112,22 @@ public class Carrello extends Action
                 idFarmacia = purch.getIdFarmacia();
             }
 
-            query = "SELECT codAcquisto FROM acquisti WHERE cfOperatore = '" + cf + "' AND data = '" + purchaseDate + "'";
+            query = "SELECT codpurch FROM purchases WHERE cfpers = '" + cf + "' AND datep = '" + purchaseDate + "'";
             table = reader.getTable(query);
 
             while (table.next())
-                codAcquisto = table.getInt("codAcquisto");
+                codAcquisto = table.getInt("codpurch");
 
             request.getSession().setAttribute("codAcquisto", new CodAcquisto(codAcquisto));
 
             if(request.getSession().getAttribute("quantity") == null)
             {
-                query = "SELECT quantitadisponibile FROM magazzino WHERE idFarmacia = " + idFarmacia +
-                        " AND codProdotto = '" + codProdotto + "'";
+                query = "SELECT availqty FROM warehouse WHERE idpharm = " + idFarmacia +
+                        " AND codprod = '" + codProdotto + "'";
                 table = reader.getTable(query);
 
                 while (table.next())
-                    oldQty = table.getInt("quantitadisponibile");
+                    oldQty = table.getInt("availqty");
 
                 request.getSession().setAttribute("quantity", new QtaIniziale(oldQty));
             }
@@ -146,19 +146,19 @@ public class Carrello extends Action
                     " VALUES ('" + codProdotto + "', " + qty + ", " + codAcquisto + ");";
             reader.update(query);
 
-            query = "SELECT id FROM Carrello WHERE codprodotto = '" + codProdotto + "' AND"
-                    + " quantita = " + qty + " AND codacquisto = " + codAcquisto;
+            query = "SELECT id FROM cart WHERE codprod = '" + codProdotto + "' AND"
+                    + " qty = " + qty + " AND codpurch = " + codAcquisto;
             table = reader.getTable(query);
             while (table.next())
                 cartId = table.getInt("id");
 
-            query = "SELECT prezzo FROM Prodotti WHERE codProdotto = '" + codProdotto + "'";
+            query = "SELECT price FROM products WHERE codprod = '" + codProdotto + "'";
             table = reader.getTable(query);
             while (table.next())
-                total = table.getFloat("prezzo");
+                total = table.getFloat("price");
             total = total * qty;
 
-            query = "UPDATE Acquisti SET totale = " + total + " WHERE codAcquisto = '" + codAcquisto + "'";
+            query = "UPDATE purchases SET total = " + total + " WHERE codpurch = '" + codAcquisto + "'";
             reader.update(query);
 
             if(prescription != null)
@@ -173,7 +173,7 @@ public class Carrello extends Action
                 dataNascita = presBean.getDataNascitaPaz();
                 codReg = presBean.getCodRegMed();
 
-                query = "INSERT INTO ricette(codricetta, idCarrello, codregionale, data)"+
+                query = "INSERT INTO prescriptions(codpres, idcart, codreg, datepr)"+
                         " VALUES ('" + (codAcquisto + "," + codReg +
                         PrescriptionDateFormatter.format(date)) +"', '" + cartId +"', '" + codReg + "', '" + todaysDateFormatter.format(date) + "')";
 
@@ -184,14 +184,14 @@ public class Carrello extends Action
                     return mapping.findForward("ERROR");
                 }
 
-                query = "SELECT * FROM Pazienti WHERE cf = '" + cfPaz + "'";
+                query = "SELECT * FROM patients WHERE cf = '" + cfPaz + "'";
                 table = reader.getTable(query);
                 while (table.next())
                     count++;
 
                 if(count == 0)
                 {
-                    query = "INSERT INTO pazienti(cf, codacquisto, nome, cognome, datanascita)" +
+                    query = "INSERT INTO patients(cf, codpurch, name, surname, bdate)" +
                             " VALUES ('" + cfPaz + "', " + codAcquisto + ", '" + nome + "', '" + cognome + "', '" + dataNascita + "')";
                     reader.update(query);
                 }
@@ -199,8 +199,8 @@ public class Carrello extends Action
                 request.getSession().removeAttribute("ricetta");
             }
 
-            query = "UPDATE magazzino SET quantitadisponibile = " + (oldQty - qty) +
-                    " WHERE idFarmacia = " + idFarmacia + " AND codProdotto = '" + codProdotto + "'";
+            query = "UPDATE warehouse SET availqty = " + (oldQty - qty) +
+                    " WHERE idpharm = " + idFarmacia + " AND codprod = '" + codProdotto + "'";
             reader.update(query);
 
         }
@@ -228,16 +228,16 @@ public class Carrello extends Action
             reader = new TableReader();
             if (oldQty != -1)
             {
-                query = "UPDATE magazzino SET quantitadisponibile = " + oldQty +
-                        " WHERE idFarmacia = " + idFarmacia + " AND codProdotto = '" + codProdotto + "'";
+                query = "UPDATE warehouse SET availqty = " + oldQty +
+                        " WHERE idpharm = " + idFarmacia + " AND codprod = '" + codProdotto + "'";
                 reader.update(query);
             }
-            query = "DELETE FROM Carrello WHERE codAcquisto = " + codAcquisto;
+            query = "DELETE FROM cart WHERE codpurch = " + codAcquisto;
             reader.update(query);
 
             if(request.getSession().getAttribute("ricetta") == null)
             {
-                query = "DELETE FROM Acquisti WHERE cfOperatore = '" + cf + "'";
+                query = "DELETE FROM purchases WHERE cfpers = '" + cf + "'";
                 reader.update(query);
             }
 

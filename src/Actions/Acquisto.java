@@ -27,10 +27,10 @@ public class Acquisto extends Action
 
             int codAcquisto = ((CodAcquisto) request.getSession().getAttribute("codAcquisto")).getCodAcquisto();
 
-            query = "SELECT completato FROM Acquisti WHERE codAcquisto = " + codAcquisto;
+            query = "SELECT completed FROM purchases WHERE codpurch = " + codAcquisto;
             table = reader.getTable(query);
             while (table.next())
-                completato = table.getBoolean("completato");
+                completato = table.getBoolean("completed");
 
             if(completato)
             {
@@ -38,7 +38,7 @@ public class Acquisto extends Action
                 return mapping.findForward("ERROR");
             }
 
-            query = "UPDATE Acquisti SET completato = true WHERE codAcquisto = " + codAcquisto;
+            query = "UPDATE purchases SET completed = true WHERE codpurch = " + codAcquisto;
             ok = reader.update(query);
 
             if(! ok)

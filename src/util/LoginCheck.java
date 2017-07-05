@@ -35,11 +35,11 @@ public class LoginCheck
 
             if(role.equals("reg"))
             {
-                tableName = "regione";
+                tableName = "region";
             }
             else
             {
-                tableName = "operatori";
+                tableName = "personnel";
             }
 
             resultSet = st.executeQuery("SELECT * FROM " + tableName + " WHERE username = '" + username
@@ -56,17 +56,17 @@ public class LoginCheck
                     loginOk = true;
 
                     if(! role.equals("reg"))
-                        role = resultSet.getString("ruolo");
+                        role = resultSet.getString("role");
                 }
             }
         }
         catch(Exception e)
         {
-            System.out.println("Errore nella query");
+            System.out.println("query error");
             e.printStackTrace();
             connection.close();
 
-            return "Query sql non valida";
+            return "invalid SQL Query";
         }
 
         if(loginOk)

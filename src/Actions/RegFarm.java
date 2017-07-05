@@ -36,8 +36,8 @@ public class RegFarm extends Action
             indirizzo = bean.getIndirizzo();
             telefono = bean.getTelefono();
 
-            String query = "SELECT * FROM Farmacie WHERE nome = '" + nomeF + "'" + " AND indirizzo = '" + indirizzo +
-                    "' AND telefono = '" + telefono + "'";
+            String query = "SELECT * FROM pharmacies WHERE name = '" + nomeF + "'" + " AND address = '" + indirizzo +
+                    "' AND tel = '" + telefono + "'";
             resultSet = reader.getTable(query);
             int count = 0;
 
@@ -50,7 +50,7 @@ public class RegFarm extends Action
                 return mapping.findForward("REGISTER_FAIL");
             }
 
-            query = "SELECT * FROM Operatori WHERE username = '" + username + "'";
+            query = "SELECT * FROM personnel WHERE username = '" + username + "'";
             resultSet = reader.getTable(query);
             count = 0;
 
@@ -63,32 +63,32 @@ public class RegFarm extends Action
                 return mapping.findForward("REGISTER_FAIL");
             }
 
-            query = "INSERT INTO Farmacie (nome, indirizzo, telefono) VALUES ("
+            query = "INSERT INTO pharmacies (name, address, tel) VALUES ("
                     + "'" + nomeF + "', " + "'" + indirizzo + "', " + "'" + telefono + "')";
             reader.update(query);
 
-            query = "SELECT id FROM Farmacie WHERE nome = '" + nomeF + "' AND indirizzo = '" + indirizzo + "' AND telefono = '" + telefono + "'";
+            query = "SELECT id FROM pharmacies WHERE name = '" + nomeF + "' AND address = '" + indirizzo + "' AND tel = '" + telefono + "'";
             resultSet = reader.getTable(query);
             int idFarmacia = 0;
             while(resultSet.next())
                 idFarmacia = resultSet.getInt("id");
 
 
-            query = "INSERT INTO Operatori (cf, idFarmacia, ruolo, nome, cognome, dataNascita, username, pass) values ("
+            query = "INSERT INTO personnel (cf, idpharm, role, name, surname, bdate, username, pass) values ("
                     + "'" + cf + "', " + "'" + idFarmacia + "', " + "'" + role + "', " + "'" + nome + "', " + "'" + cognome + "', " + "'" + dataNascita + "', "
                     + "'" + username + "', " + "'" + password + "')";
             reader.update(query);
 
             int i = 0;
-            query = "SELECT codProdotto FROM Prodotti";
+            query = "SELECT codprod FROM products";
             resultSet = reader.getTable(query);
 
-            query = "INSERT INTO magazzino(idfarmacia, codprodotto, quantitadisponibile) VALUES ";
+            query = "INSERT INTO warehouse(idpharm, codprod, availqty) VALUES ";
             while(resultSet.next())
             {
                 if(i != 0)
                     query += ", ";
-                query += "(" + idFarmacia + ", '" + resultSet.getString("codProdotto") + "', 0)";
+                query += "(" + idFarmacia + ", '" + resultSet.getString("codprod") + "', 0)";
                 i++;
             }
             reader.update(query);

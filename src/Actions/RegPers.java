@@ -37,7 +37,7 @@ public class RegPers extends Action
             statement = connection.createStatement();
             username = bean.getUsername();
 
-            String query = "SELECT * FROM Operatori WHERE username = '" + username + "'";
+            String query = "SELECT * FROM personnel WHERE username = '" + username + "'";
             resultSet = statement.executeQuery(query);
             int conta = 0;
 
@@ -58,14 +58,14 @@ public class RegPers extends Action
             dataNascita = bean.getDataNascita();
 
             String username_tit = ((LoginBean) request.getSession().getAttribute("LoginBean")).getUsername();
-            query = "SELECT * FROM Operatori WHERE username = '" + username_tit + "'";
+            query = "SELECT * FROM personnel WHERE username = '" + username_tit + "'";
             resultSet = statement.executeQuery(query);
 
             int idFarmacia = 0;
             while(resultSet.next())
-                idFarmacia = resultSet.getInt("idFarmacia");
+                idFarmacia = resultSet.getInt("idpharm");
 
-            query = "INSERT INTO Operatori (cf, idFarmacia, ruolo, nome, cognome, dataNascita, username, pass) values ("
+            query = "INSERT INTO personnel (cf, idpharm, role, name, surname, bdate, username, pass) values ("
                     + "'" + cf + "', " + idFarmacia + ", " + "'" + role + "', " + "'" + nome + "', " + "'" + cognome + "', " + "'" + dataNascita + "', "
                     + "'" + username + "', " + "'" + password + "')";
             statement.executeUpdate(query);

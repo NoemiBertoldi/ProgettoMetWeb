@@ -25,7 +25,7 @@
 <body>
 <div id="container">
     <div id="header">
-        <h1>Inbox Mail</h1>
+        <h1>Sent Mail</h1>
     </div>
     <div id="cont">
         <div id="left" class="left">
@@ -33,7 +33,13 @@
         </div>
         <div id="elenco" class="right">
 
-
+            <table>
+                <tr>
+                    <th>Receiver</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Message</th>
+                </tr>
             <%
             try
             {
@@ -46,13 +52,7 @@
                 {
                     i++;
             %>
-            <table>
-                <tr>
-                    <th>Receiver</th>
-                    <th>Subject</th>
-                    <th>Date</th>
-                    <th>Message</th>
-                </tr>>
+
             <tr>
                 <td>
                    <%

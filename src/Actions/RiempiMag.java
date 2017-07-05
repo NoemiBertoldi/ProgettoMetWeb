@@ -23,22 +23,22 @@ public class RiempiMag extends Action
         qty= Integer.parseInt(bean.getQty());
         username= ((LoginBean) request.getSession().getAttribute("LoginBean")).getUsername();
 
-        query = "SELECT idfarmacia FROM operatori WHERE username ='"+username+"'";
+        query = "SELECT idpharm FROM personnel WHERE username ='"+username+"'";
         table = reader.getTable(query);
         while(table.next())
-            farm=table.getInt("idFarmacia");
+            farm=table.getInt("idpharm");
 
-        query="SELECT codprodotto FROM prodotti WHERE nome ='" + nomeprodotto+"'";
+        query="SELECT codprod FROM products WHERE name ='" + nomeprodotto+"'";
         table=reader.getTable(query);
         while (table.next())
-            codprod=table.getString("codProdotto");
+            codprod=table.getString("codprod");
 
-        query="SELECT quantitadisponibile FROM magazzino WHERE codProdotto='"+codprod+"' AND idFarmacia = "+farm;
+        query="SELECT availqty FROM warehouse WHERE codprod='"+codprod+"' AND idpharm = "+farm;
         table = reader.getTable(query);
         while(table.next())
-            oldQty=table.getInt("quantitadisponibile");
+            oldQty=table.getInt("availqty");
 
-        query="UPDATE magazzino SET quantitadisponibile="+(oldQty+qty)+"WHERE codProdotto='"+codprod+"' AND idFarmacia="+farm;
+        query="UPDATE warehouse SET availqty="+(oldQty+qty)+"WHERE codprod='"+codprod+"' AND idpharm="+farm;
         res=reader.update(query);
 
         if (res)

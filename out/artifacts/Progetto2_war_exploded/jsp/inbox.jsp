@@ -21,6 +21,13 @@
             <jsp:include page="../util/menu.jsp"/>
         </div>
         <div id="elenco" class="right">
+            <table>
+                <tr>
+                    <th>Sender</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Message</th>
+                </tr>
             <%
                 int i=0;
             try
@@ -34,60 +41,44 @@
                 {
                     i++;
             %>
-            <div class="clear">
-                <div class="tleft">
-                    <b>Sender: </b>
-                    <%
-                        mitt = table.getString("fromOp");
-                        if(mitt == null)
-                            mitt = table.getString("fromReg");
-                    %>
-                </div>
-                <div class="tright">
-                    <%= mitt %>
-                </div>
-            </div>
 
-            <div class="clear">
-                <div class="tleft">
-                    <b>Subject: </b>
-                </div>
-                <div class="tright">
-                    <%= table.getString("oggetto") %>
-                </div>
-            </div>
+                <tr>
+                    <td>
+                        <%
+                            mitt = table.getString("fromOp");
+                            if(mitt == null)
+                                mitt = table.getString("fromReg");
+                        %>
+                        <%= mitt %>
+                    </td>
 
-            <div class="clear">
-                <div class="tleft">
-                    <b>Date: </b>
-                </div>
-                <div class="tright">
-                    <%= table.getString("dt_invio") %>
-                </div>
-            </div>
-
-            <div class="clear">
-                <div class="tleft">
-                    <b>Message: </b>
-                </div>
-                <div class="tright">
-                    <%= table.getString("msg") %>
-                </div>
-            </div>
+                    <td>
+                        <%= table.getString("oggetto") %>
+                    </td>
+                    <td>
+                        <%= table.getString("dt_invio") %>
+                    </td>
+                    <td>
+                        <%= table.getString("msg") %>
+                    </td>
+                </tr>
                 <%
-                }
-            }
-            catch(Exception e)
-            {
-
-            }
-                    if(i == 0)
-                    {
+                    }
                 %>
+            </table>
+            <%
+                if(i == 0)
+                {
+            %>
             <h3 style="text-align: center">You haven't received any email</h3>
             <%
+                    }
+
                 }
-            %>
+                catch(Exception e)
+                {
+
+                }%>
         </div>
         <div class="clear"/>
     </div>

@@ -56,7 +56,7 @@
 
         <div id="elenco" class="right">
             If you want to check how the sales are going in general click <a href="<%=request.getContextPath()%>/jsp/analisitot.jsp">here</a><br><br>
-            If you want to check how the sales were/are going in a certain perion, just fill this form and click on "SEND"
+            If you want to check how the sales were/are going in a certain perion, just fill this form and click on "SEND"<br><br><br>
             <form action="<%=request.getContextPath()%>/analisi.do" method="post" name="form" onsubmit="return validateAnalysis()">
                 <div class="clear">
                 <div class="tleft">
@@ -76,6 +76,8 @@
                 </div>
                 <input type="submit" value="SEND">
             </form>
+
+            ***Important Note!!! If you want to select a single day, type end date = start date + 1 day
         </div>
         <div class="clear"/>
     </div>

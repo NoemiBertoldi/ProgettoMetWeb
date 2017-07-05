@@ -31,10 +31,10 @@ public class AnalisiDate extends Action
 
         try
         {
-
+            statement = connection.createStatement();
             datai=bean.getDatai();
             dataf=bean.getDataf();
-            String query= "SELECT * FROM acquisti WHERE data<'"+dataf+"' AND data>'"+datai+"'";
+            String query= "SELECT * FROM purchases WHERE datep<'"+dataf+"' AND datep>'"+datai+"'";
             resultSet = statement.executeQuery(query);
 
             int conta = 0;

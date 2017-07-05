@@ -36,12 +36,12 @@
                     {
                 %>
                 <tr>
-                    <td><%= table.getString("nome") %></td>
-                    <td><%= table.getString("cognome") %></td>
+                    <td><%= table.getString("name") %></td>
+                    <td><%= table.getString("surname") %></td>
                     <td><%= table.getString("username") %></td>
-                    <td><%= table.getString("ruolo").toUpperCase() %></td>
+                    <td><%= table.getString("role").toUpperCase() %></td>
                     <td><%= table.getString("cf") %></td>
-                    <td><%= table.getString("datanascita") %></td>
+                    <td><%= table.getString("bdate") %></td>
                 </tr>
                 <%
                     }

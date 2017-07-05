@@ -51,14 +51,14 @@ public class TableReader {
         String query;
         int farmacia = -1;
 
-        query = "SELECT idFarmacia FROM Operatori WHERE username = '" + username + "'";
+        query = "SELECT idpharm FROM personnel WHERE username = '" + username + "'";
         table = getTable(query);
 
         while (table.next())
-            farmacia = table.getInt("idFarmacia");
+            farmacia = table.getInt("idpharm");
 
 
-        query = "SELECT * FROM Operatori WHERE idFarmacia = " + farmacia;
+        query = "SELECT * FROM personnel WHERE idpharm = " + farmacia;
         table = getTable(query);
 
         return table;
@@ -69,17 +69,17 @@ public class TableReader {
         String query;
         int farmacia = -1;
 
-        query = "SELECT idFarmacia FROM Operatori WHERE username = '" + username + "'";
+        query = "SELECT idpharm FROM personnel WHERE username = '" + username + "'";
         table = getTable(query);
 
         while (table.next())
-            farmacia = table.getInt("idFarmacia");
+            farmacia = table.getInt("idpharm");
 
-        query = "select prodotti.nome, prodotti.descrizione,prodotti.prezzo,prodotti.conricetta,prodotti.codprodotto, magazzino.quantitaDisponibile "
-                + "from operatori join farmacie on operatori.idFarmacia = farmacie.id "
-                + "join magazzino on farmacie.id = magazzino.idFarmacia "
-                + "join prodotti on magazzino.codProdotto = prodotti.codprodotto "
-                + "where operatori.username = '" + username + "'";
+        query = "select products.nome, products.descr,products.price,products.needpres,products.codprod, warehouse.availqty "
+                + "from personnel join pharmacies on personnel.idpharm = pharmacies.id "
+                + "join warehouse on pharmacies.id = warehouse.idpharm "
+                + "join products on warehouse.codprod = products.codprod "
+                + "where personnel.username = '" + username + "'";
 
         table = getTable(query);
 
@@ -93,17 +93,17 @@ public class TableReader {
         int farmacia = -1;
 
         if (role.toLowerCase().equals("reg")) {
-            query = "SELECT nome AS username FROM farmacie";
+            query = "SELECT nome AS username FROM pharmacies";
         }
         else
         {
-            query = "SELECT idFarmacia FROM operatori WHERE username = '" + username + "'";
+            query = "SELECT idpharm FROM personnel WHERE username = '" + username + "'";
             table= getTable(query);
 
             while (table.next())
-                farmacia = table.getInt("idFarmacia");
+                farmacia = table.getInt("idpharm");
 
-            query = "SELECT username FROM operatori WHERE idFarmacia = " + farmacia;
+            query = "SELECT username FROM personnel WHERE idpharm = " + farmacia;
         }
         return getTable(query);
     }
@@ -113,9 +113,9 @@ public class TableReader {
         String query;
 
         if (role.toLowerCase().equals("reg"))
-            query = "SELECT fromReg, fromOp, msg, oggetto, dt_invio FROM Messaggi WHERE toReg = '" + username + "'";
+            query = "SELECT fromReg, fromOp, msg, obj, datesent FROM messages WHERE toReg = '" + username + "'";
         else
-            query = "SELECT fromReg, fromOp, msg, oggetto, dt_invio FROM Messaggi WHERE toOp = '" + username + "'";
+            query = "SELECT fromReg, fromOp, msg, obj, datesent FROM messages WHERE toOp = '" + username + "'";
 
         return getTable(query);
     }
@@ -125,9 +125,9 @@ public class TableReader {
         String query;
 
         if (role.toLowerCase().equals("reg"))
-            query = "SELECT toReg, toOp, msg, oggetto, dt_invio FROM Messaggi WHERE fromReg = '" + username + "'";
+            query = "SELECT toReg, toOp, msg, obj, datesent FROM messages WHERE fromReg = '" + username + "'";
         else
-            query = "SELECT toReg, toOp, msg, oggetto, dt_invio FROM Messaggi WHERE fromOp = '" + username + "'";
+            query = "SELECT toReg, toOp, msg, obj, datesent FROM messages WHERE fromOp = '" + username + "'";
 
         return getTable(query);
     }

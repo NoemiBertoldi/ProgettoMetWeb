@@ -41,25 +41,25 @@ public class InviaMail extends Action
 
                 if(role.toLowerCase().equals("reg"))
                 {
-                    queryTf = "SELECT Operatori.username FROM Operatori JOIN Farmacie"
-                            + " ON Operatori.idFarmacia = Farmacie.id"
-                            + " WHERE Operatori.ruolo = 'TF' AND Farmacie.nome = '" + dest + "'";
+                    queryTf = "SELECT personnel.username FROM personnel JOIN pharmacies"
+                            + " ON personnel.idpharm = pharmacies.id"
+                            + " WHERE personnel.role = 'TF' AND pharmacies.name = '" + dest + "'";
                     table = reader.getTable(queryTf);
 
                     while(table.next())
                         tf = table.getString("username");
 
-                    query = "INSERT INTO messaggi(dt_invio, fromreg, toreg, fromop, toop, oggetto, msg)\n" +
+                    query = "INSERT INTO messages(datesent, fromreg, toreg, fromop, toop, obj, msg)\n" +
                             "    VALUES ('" + data + "', '" + username + "', null, null, '" + tf + "', '" + obj + "', '" + msg + "')";
 
                 }
                 else
                 {
                     if(dest.toLowerCase().startsWith("reg"))
-                        query = "INSERT INTO messaggi(dt_invio, fromreg, toreg, fromop, toop, oggetto, msg)\n" +
+                        query = "INSERT INTO messages(datesent, fromreg, toreg, fromop, toop, obj, msg)\n" +
                                 "    VALUES ('" + data + "', null, '" + dest + "', '" + username + "', null, '" + obj + "', '" + msg + "')";
                     else
-                        query = "INSERT INTO messaggi(dt_invio, fromreg, toreg, fromop, toop, oggetto, msg)\n" +
+                        query = "INSERT INTO messages(datesent, fromreg, toreg, fromop, toop, obj, msg)\n" +
                                 "    VALUES ('" + data + "', null, null, '" + username + "', '" + dest + "', '" + obj + "', '" + msg + "')";
                 }
 
@@ -68,9 +68,9 @@ public class InviaMail extends Action
                     dest = dests[i];
                     if(role.toLowerCase().equals("reg"))
                     {
-                        queryTf = "SELECT Operatori.username FROM Operatori JOIN Farmacie"
-                                + " ON Operatori.idFarmacia = Farmacie.id"
-                                + " WHERE Operatori.ruolo = 'TF' AND Farmacie.nome = '" + dest + "'";
+                        queryTf = "SELECT personnel.username FROM personnel JOIN pharmacies"
+                                + " ON personnel.idpharm = pharmacies.id"
+                                + " WHERE personnel.role = 'TF' AND pharmacies.name = '" + dest + "'";
                         table = reader.getTable(queryTf);
 
                         while(table.next())

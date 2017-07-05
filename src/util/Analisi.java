@@ -19,10 +19,10 @@ public class Analisi
 
         if (role.equals("tf"))
         {
-            query = "SELECT idFarmacia FROM operatori where username = '" + username + "'";
+            query = "SELECT idpharm FROM personnel where username = '" + username + "'";
             table = reader.getTable(query);
             while(table.next())
-                this.idFarmacia = table.getInt("idFarmacia");
+                this.idFarmacia = table.getInt("idpharm");
         }
     }
 
@@ -30,11 +30,11 @@ public class Analisi
     {
         String queryTf, queryReg;
 
-        queryReg = "SELECT COUNT(*) AS countreg FROM acquisti JOIN operatori on acquisti.cfOperatore = operatori.cf"
-                + " WHERE acquisti.completato = true";
+        queryReg = "SELECT COUNT(*) AS countreg FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
+                + " WHERE purchases.completed = true";
 
-        queryTf = "SELECT COUNT(*) AS counttf FROM acquisti JOIN operatori on acquisti.cfOperatore = operatori.cf"
-                + " WHERE operatori.idFarmacia = " + idFarmacia + " AND acquisti.completato = true";
+        queryTf = "SELECT COUNT(*) AS counttf FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
+                + " WHERE personnel.idpharm = " + idFarmacia + " AND purchases.completed = true";
 
 
 
@@ -45,13 +45,13 @@ public class Analisi
     {
         String queryTf, queryReg;
 
-        queryReg = "SELECT SUM(Carrello.quantita) AS countreg FROM Acquisti JOIN Operatori on Acquisti.cfOperatore = Operatori.cf"
-                + " JOIN carrello on Acquisti.codAcquisto = Carrello.codAcquisto"
-                + " WHERE Acquisti.completato = true";
+        queryReg = "SELECT SUM(cart.qty) AS countreg FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
+                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto"
+                + " WHERE purchases.completed = true";
 
-        queryTf = "SELECT SUM(carrello.quantita) AS counttf FROM acquisti JOIN operatori on acquisti.cfOperatore = operatori.cf"
-                + " JOIN carrello on acquisti.codAcquisto = carrello.codAcquisto"
-                + " WHERE operatori.idFarmacia = " + idFarmacia + "AND acquisti.completato = true";
+        queryTf = "SELECT SUM(cart.qty) AS counttf FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
+                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto"
+                + " WHERE personnel.idpharm = " + idFarmacia + "AND purchases.completed = true";
 
         return getTable(queryTf, queryReg);
     }
@@ -60,13 +60,13 @@ public class Analisi
     {
         String queryTf, queryReg;
 
-        queryReg = "SELECT SUM(carrello.quantita) AS countreg FROM Acquisti JOIN Operatori on Acquisti.cfOperatore = Operatori.cf"
-                + " JOIN carrello on Acquisti.codAcquisto = Carrello.codAcquisto JOIN Ricette on Carrello.id = Ricette.idCarrello"
-                + " WHERE Acquisti.completato = true";
+        queryReg = "SELECT SUM(cart.qty) AS countreg FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
+                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto JOIN prescriptions on cart.id = prescriptions.idcart"
+                + " WHERE purchases.completed = true";
 
-        queryTf = "SELECT SUM(carrello.quantita) AS counttf FROM acquisti JOIN operatori on acquisti.cfOperatore = operatori.cf"
-                + " JOIN carrello on acquisti.codAcquisto = carrello.codAcquisto JOIN ricette on carrello.id = ricette.idCarrello"
-                + " WHERE operatori.idFarmacia = " + idFarmacia + "AND acquisti.completato = true";
+        queryTf = "SELECT SUM(cart.qty) AS counttf FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
+                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto JOIN prescriptions on cart.id = prescriptions.idcart"
+                + " WHERE personnel.idpharm = " + idFarmacia + "AND purchases.completed = true";
 
         return getTable(queryTf, queryReg);
     }
@@ -75,13 +75,13 @@ public class Analisi
     {
         String queryTf, queryReg;
 
-        queryReg = "SELECT COUNT(*) AS countreg FROM acquisti JOIN operatori on acquisti.cfOperatore = operatori.cf"
-                + " JOIN carrello on acquisti.codAcquisto = carrello.codAcquisto JOIN ricette on carrello.id = ricette.idCarrello"
-                + " WHERE acquisti.completato = true";
+        queryReg = "SELECT COUNT(*) AS countreg FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
+                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto JOIN prescriptions on cart.id = prescriptions.idcart"
+                + " WHERE purchases.completed = true";
 
-        queryTf = "SELECT COUNT(*) AS counttf FROM acquisti JOIN operatori on acquisti.cfOperatore = operatori.cf"
-                + " JOIN carrello on acquisti.codAcquisto = carrello.codAcquisto JOIN ricette on carrello.id = ricette.idCarrello"
-                + " WHERE operatori.idFarmacia = " + idFarmacia + "AND acquisti.completato = true";
+        queryTf = "SELECT COUNT(*) AS counttf FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
+                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto JOIN prescriptions on cart.id = prescriptions.idcart"
+                + " WHERE personnel.idpharm = " + idFarmacia + "AND purchases.completed = true";
 
         return getTable(queryTf, queryReg);
     }
@@ -90,13 +90,13 @@ public class Analisi
     {
         String queryTf, queryReg;
 
-        queryReg = "SELECT AVG(carrello.quantita) AS countreg FROM acquisti JOIN operatori on acquisti.cfOperatore = operatori.cf"
-                + " JOIN carrello on acquisti.codAcquisto = carrello.codAcquisto JOIN ricette on carrello.id = ricette.idCarrello"
-                + " WHERE acquisti.completato = true";
+        queryReg = "SELECT AVG(cart.qty) AS countreg FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
+                + " JOIN cart on purchases.codpurch = cart.codpurch JOIN prescriptions on cart.id = prescriptions.idcart"
+                + " WHERE purchases.completed = true";
 
-        queryTf = "SELECT AVG(carrello.quantita) AS counttf FROM acquisti JOIN operatori on acquisti.cfOperatore = operatori.cf"
-                + " JOIN carrello on acquisti.codAcquisto = carrello.codAcquisto JOIN ricette on carrello.id = ricette.idCarrello"
-                + " WHERE operatori.idFarmacia = " + idFarmacia + "AND acquisti.completato = true";
+        queryTf = "SELECT AVG(cart.qty) AS counttf FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
+                + " JOIN cart on purchases.codpurch = cart.codpurch JOIN prescriptions on cart.id = prescriptions.idcart"
+                + " WHERE personnel.idpharm = " + idFarmacia + "AND purchases.completed = true";
 
         return getTable(queryTf, queryReg);
     }
