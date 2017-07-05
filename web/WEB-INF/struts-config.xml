@@ -12,6 +12,7 @@
         <form-bean name="MagBean" type="Beans.MagBean"/>
         <form-bean name="ProdBean" type="Beans.ProdBean"/>
         <form-bean name="PresBean" type="Beans.PresBean"/>
+        <form-bean name="AnalysisBean" type="Beans.AnalysisBean"/>
         <form-bean name="MailBean" type="Beans.MailBean"/>
     </form-beans>
     <action-mappings>
@@ -50,5 +51,11 @@
             <forward name="SEND_OK" path="/jsp/sent.jsp" />
             <forward name="ERROR" path="/jsp/error.jsp" />
         </action>
+
+        <action path="/analisi" type = "Actions.AnalisiDate" name="AnalysisBean" scope="request">
+            <forward name="DATE_OK" path="/jsp/analisidate.jsp" />
+            <forward name="ERROR" path="/jsp/error.jsp" />
+        </action>
+
     </action-mappings>
 </struts-config>

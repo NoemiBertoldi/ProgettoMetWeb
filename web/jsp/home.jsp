@@ -50,7 +50,7 @@
         <div id = "elenco" class="right">
             <ul>
                 <li><a href="<%=request.getContextPath()%>/jsp/regfarmacia.jsp">Register a New Pharmacy</a></li>
-                <li><a href="<%=request.getContextPath()%>/jsp/analisi.jsp">Sales Analysis</a></li>
+                <li><a href="<%=request.getContextPath()%>/jsp/analisitot.jsp">Sales Analysis</a></li>
             </ul>
         </div>
         <%
@@ -64,7 +64,7 @@
                 <li><a href="<%=request.getContextPath()%>/jsp/personale.jsp">Personnel List</a></li>
                 <li><a href="<%=request.getContextPath()%>/jsp/acquisto.jsp">Purchase Something</a></li>
                 <li><a href="<%=request.getContextPath()%>/jsp/magazzino.jsp">Warehouse Management</a></li>
-                <li><a href="<%=request.getContextPath()%>/jsp/analisi.jsp">Sales Analysis</a></li>
+                <li><a href="<%=request.getContextPath()%>/jsp/analisitot.jsp">Sales Analysis</a></li>
             </ul>
         </div>
         <%
