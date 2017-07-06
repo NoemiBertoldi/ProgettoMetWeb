@@ -65,7 +65,7 @@
 
                     <form action="<%=request.getContextPath()%>/cart.do" method="post" name="form">
                         <td>
-                            <input type="number" name="qty" min="0" max="<%=table.getString("availqty")%>">boxes<br>
+                            <input type="number" name="qty" min="1" max="<%=table.getString("availqty")%>">boxes<br>
                         </td>
                         <td class="blank">
                             <input type="text" name="productName" id="productName" value="<%= table.getString("codprod") %>"

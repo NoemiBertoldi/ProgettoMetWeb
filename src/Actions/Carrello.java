@@ -28,7 +28,7 @@ public class Carrello extends Action
         PresBean presBean;
         ProdBean prodBean;
         boolean needsPres = true;
-        String query, username, cf="", codProdotto="", role, purchaseDate;
+        String query, username, cf="", codProdotto="", purchaseDate;
         Prescription prescription;
         int oldQty = -1, qty = 0, codAcquisto = -1, idFarmacia = -1, cartId=-1;
         ResultSet table;
@@ -62,21 +62,11 @@ public class Carrello extends Action
                 while (table.next())
                     needsPres = table.getBoolean("needspres");
 
-                role = (String) request.getSession().getAttribute("role");
 
                 if(needsPres)
                 {
-                    if (role.toLowerCase().equals("ob"))
-                    {
-                        request.getSession().setAttribute("exitcode", "Bench operator can't sell a drug that needs prescription");
-                        return mapping.findForward("ERROR");
-                    }
-
-                    else
-                    {
-                        request.getSession().setAttribute("ricetta", new Prescription(codProdotto, qty));
-                        return mapping.findForward("NEED_PRES");
-                    }
+                    request.getSession().setAttribute("ricetta", new Prescription(codProdotto, qty));
+                    return mapping.findForward("NEED_PRES");
                 }
             }
             else

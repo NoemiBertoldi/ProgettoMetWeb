@@ -12,16 +12,45 @@ INSERT INTO region(username, pass)
 
 INSERT INTO products(codprod, descr, name, price, needspres)
     VALUES ('1a2c', 'Anti infiammatorio e anti dolorifico', 'oki', 10, true);
+
 INSERT INTO products(codprod, descr, name, price, needspres)
     VALUES ('1b2a', 'Antisettico orofaringeo', 'neoBorocillina', 7.90, false);
 
+INSERT INTO products(codprod, descr, name, price, needspres)
+    VALUES ('1a2d', 'amoxicillina', 'zimox', 4.90, true);
+
+INSERT INTO products(codprod, descr, name, price, needspres)
+    VALUES ('1b2d', 'betametasone', 'bentelan', 3.52, true);
+
+INSERT INTO products(codprod, descr, name, price, needspres)
+    VALUES ('1b2j', 'isoconazolo nitrato', 'travogen', 7.52, false);
+
+INSERT INTO products(codprod, descr, name, price, needspres)
+    VALUES ('1b2v', 'contro i sintomi dell.influenza', 'tachiflu', 7.52, false);
+
 INSERT INTO warehouse(idpharm, codprod, availqty)
     VALUES (0, '1b2a', 25);
+
 INSERT INTO warehouse(idpharm, codprod, availqty)
     VALUES (0, '1a2c', 25);
 
+INSERT INTO warehouse(idpharm, codprod, availqty)
+    VALUES (1, '1b2j', 25);
+
+INSERT INTO warehouse(idpharm, codprod, availqty)
+    VALUES (1, '1b2v', 25);
+
 INSERT INTO doctors(codreg, name, surname, address)
     VALUES ('med2563', 'Pino', 'Pinguino', 'Via Smile 60');
+
+INSERT INTO doctors(codreg, name, surname, address)
+    VALUES ('med2564', 'Luigi', 'Matusa', 'Via Vecchi 60');
+
+INSERT INTO doctors(codreg, name, surname, address)
+    VALUES ('med2565', 'Viola', 'Verde', 'Via ColoriStrani 60');
+
+INSERT INTO doctors(codreg, name, surname, address)
+    VALUES ('med2566', 'Blu', 'Rosso', 'Via Viola 60');
 
 INSERT INTO messages(datesent, fromreg, toreg, fromop, toop, obj, msg)
     VALUES ('2017-11-12', null, null, 'gVerdi', 'paoloP', 'primo', 'messaggio giovanni-paolo');
