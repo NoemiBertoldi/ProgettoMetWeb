@@ -97,6 +97,6 @@
     <div id= "footer">
         <h6>Created by Noemi Bertoldi - All rights reserved - 2017</h6>
     </div>
-
+</div>
 </body>
 </html>

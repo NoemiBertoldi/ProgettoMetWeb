@@ -59,11 +59,11 @@
                 {
             %>
             <tr>
-                <td><%= table.getString("nome") %></td>
-                <td><%= table.getString("descrizione") %></td>
-                <td><%= table.getString("quantitaDisponibile") %></td>
-                <td><%= table.getBoolean("conRicetta") %><%
-                    if(table.getBoolean("conRicetta"))
+                <td><%= table.getString("name") %></td>
+                <td><%= table.getString("descr") %></td>
+                <td><%= table.getString("availqty") %></td>
+                <td><%
+                    if(table.getBoolean("needspres"))
                     {
                 %>
                     &#10004;
@@ -87,7 +87,7 @@
                 </td>
                 <td>
                     <input type="submit" value="Order">
-                    <input type="text" name="nomeprodotto" id="nomeprodotto" value="<%= table.getString("nome") %>"
+                    <input type="text" name="nomeprodotto" id="nomeprodotto" value="<%= table.getString("name") %>"
                        style="visibility:hidden">
                 </td>
                     </form>

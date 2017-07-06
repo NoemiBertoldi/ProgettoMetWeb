@@ -53,10 +53,10 @@
                     </td>
 
                     <td>
-                        <%= table.getString("oggetto") %>
+                        <%= table.getString("obj") %>
                     </td>
                     <td>
-                        <%= table.getString("dt_invio") %>
+                        <%= table.getString("datesent") %>
                     </td>
                     <td>
                         <%= table.getString("msg") %>

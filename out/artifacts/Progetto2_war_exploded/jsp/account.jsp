@@ -1,3 +1,6 @@
+<%@ page import="util.TableReader" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="Beans.LoginBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -7,6 +10,7 @@
 <body>
 <div id="container">
     <div id="header">
+        <h1>Account</h1>
     </div>
     <div id="cont">
 
@@ -15,7 +19,49 @@
         </div>
 
         <div id="elenco"class="right">
+            <%
+            TableReader reader = new TableReader();
+            LoginBean bean = ((LoginBean) session.getAttribute("LoginBean"));
+            ResultSet table = reader.buildAccountTable(bean.getUsername());
 
+            while(table.next())
+            {
+            %>
+            <div class="clear">
+                <div class="tleft">
+                    Name:
+                </div>
+                <div class="tright">
+                    <%=table.getString("name")%>
+                </div>
+            </div>
+            <div class="clear">
+                <div class="tleft">
+                    Surname:
+                </div>
+                <div class="tright">
+                    <%=table.getString("surname")%>
+                </div>
+            </div>
+            <div class="clear">
+                <div class="tleft">
+                    Username
+                </div>
+                <div class="tright">
+                    <%=table.getString("username")%>
+                </div>
+            </div>
+            <div class="clear">
+                <div class="tleft">
+                    Works at:
+                </div>
+                <div class="tright">
+                    <%=table.getString("pharmname")%>
+                </div>
+            </div>
+            <%
+            }
+            %>
         </div>
         <div class="clear"/>
 

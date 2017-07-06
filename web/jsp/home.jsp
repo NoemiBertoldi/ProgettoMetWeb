@@ -17,19 +17,19 @@
         <h1>Region Home</h1>
         <%
             }
-            else if(role.toUpperCase().equals("TF"))
+            else if(role.equalsIgnoreCase("TF"))
             {
         %>
         <h1>Pharmacist Home</h1>
         <%
             }
-            else if(role.toUpperCase().equals("DF"))
+            else if(role.equalsIgnoreCase("DF"))
             {
         %>
         <h1>Doctor Home</h1>
         <%
             }
-            else if(role.toUpperCase().equals("OB"))
+            else if(role.equalsIgnoreCase("OB"))
             {
         %>
         <h1>Bench Operator Home</h1>

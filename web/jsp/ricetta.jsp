@@ -1,3 +1,6 @@
+<%@ page import="util.TableReader" %>
+<%@ page import="Beans.LoginBean" %>
+<%@ page import="java.sql.ResultSet" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -41,7 +44,21 @@
                         <h4>Prescription Data:</h4>
                         <div class="clear">
                             <div class="tleft">Doctor's Regional Code</div>
-                            <div class="tright"><input type="text" name="codRegMed" id="codRegMed" required></div>
+                            <div class="tright">
+                                <select name="codRegMed" id="codRegMed" required>
+                                <%
+                                    TableReader reader = new TableReader();
+                                    LoginBean bean = ((LoginBean) session.getAttribute("LoginBean"));
+
+                                    ResultSet table = reader.buildMedTable();
+                                    while(table.next())
+                                    {
+                                %>
+                                <option value="<%=table.getString("codreg")%>"><%=table.getString("name")%> <%=table.getString("surname")%></option>
+                                <%
+                                    }
+                                %>
+                            </div>
                         </div>
 
                         <input type="submit" value="Record">

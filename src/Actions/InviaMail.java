@@ -91,7 +91,7 @@ public class InviaMail extends Action
             }
             else
             {
-                request.getSession().setAttribute("msg", "No receiver selected! ");
+                request.getSession().setAttribute("exitcode", "No receiver selected! ");
                 return mapping.findForward("ERROR");
             }
 

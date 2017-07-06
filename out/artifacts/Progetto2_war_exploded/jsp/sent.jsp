@@ -64,10 +64,10 @@
                 </td>
 
                 <td>
-                    <%= table.getString("oggetto") %>
+                    <%= table.getString("obj") %>
                 </td>
                 <td>
-                    <%= table.getString("dt_invio") %>
+                    <%= table.getString("datesent") %>
                 </td>
                 <td>
                     <%= table.getString("msg") %>
@@ -97,6 +97,6 @@
     <div id= "footer">
         <h6>Created by Noemi Bertoldi - All rights reserved - 2017</h6>
     </div>
-
+</div>
 </body>
 </html>

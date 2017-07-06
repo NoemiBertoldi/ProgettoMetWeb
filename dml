@@ -1,0 +1,30 @@
+INSERT INTO pharmacies(id, name, address, tel)
+        VALUES (0, 'alfa', 'Via alfa 15', '1234567890');
+
+INSERT INTO personnel (cf, idpharm, role, name, surname, bdate, username, pass)
+	VALUES ('1234567891234567', 0, 'TF', 'Giovanni', 'Verdi', '10-12-1957', 'gVerdi', '1234');
+
+INSERT INTO personnel (cf, idpharm, role, name, surname, bdate, username, pass)
+	VALUES ('1234467891234567', 0, 'DF', 'Paolo', 'Paoli', '10-05-1957', 'paoloP', '4567');
+
+INSERT INTO region(username, pass)
+    VALUES ('regPiemonte', 'asdf');
+
+INSERT INTO products(codprod, descr, name, price, needspres)
+    VALUES ('1a2c', 'Anti infiammatorio e anti dolorifico', 'oki', 10, true);
+INSERT INTO products(codprod, descr, name, price, needspres)
+    VALUES ('1b2a', 'Antisettico orofaringeo', 'neoBorocillina', 7.90, false);
+
+INSERT INTO warehouse(idpharm, codprod, availqty)
+    VALUES (0, '1b2a', 25);
+INSERT INTO warehouse(idpharm, codprod, availqty)
+    VALUES (0, '1a2c', 25);
+
+INSERT INTO doctors(codreg, name, surname, address)
+    VALUES ('med2563', 'Pino', 'Pinguino', 'Via Smile 60');
+
+INSERT INTO messages(datesent, fromreg, toreg, fromop, toop, obj, msg)
+    VALUES ('2017-11-12', null, null, 'gVerdi', 'paoloP', 'primo', 'messaggio giovanni-paolo');
+
+INSERT INTO messages(datesent, fromreg, toreg, fromop, toop, obj, msg)
+VALUES ('2015-11-12', null, 'regPiemonte', 'gVerdi', null, 'secondo', 'messaggio giovanni-regione');

@@ -53,7 +53,7 @@ public class Carrello extends Action
                 }
                 catch (Exception e)
                 {
-                    request.getSession().setAttribute("msg","Invalid quantity");
+                    request.getSession().setAttribute("exitcode","Invalid quantity");
                     return mapping.findForward("ERROR");
                 }
                 query = "SELECT needspres FROM products WHERE codprod = '" + codProdotto + "'";
@@ -68,7 +68,7 @@ public class Carrello extends Action
                 {
                     if (role.toLowerCase().equals("ob"))
                     {
-                        request.getSession().setAttribute("msg", "Bench operator can't sell a drug that needs prescription");
+                        request.getSession().setAttribute("exitcode", "Bench operator can't sell a drug that needs prescription");
                         return mapping.findForward("ERROR");
                     }
 
@@ -138,11 +138,11 @@ public class Carrello extends Action
 
             if(oldQty < qty)
             {
-                request.getSession().setAttribute("msg", "You selected too many products!");
+                request.getSession().setAttribute("exitcode", "You selected too many products!");
                 return mapping.findForward("ERROR");
             }
 
-            query = "INSERT INTO carrello (codprodotto, quantita, codacquisto)" +
+            query = "INSERT INTO cart (codprod, qty, codpurch)" +
                     " VALUES ('" + codProdotto + "', " + qty + ", " + codAcquisto + ");";
             reader.update(query);
 
@@ -179,7 +179,7 @@ public class Carrello extends Action
 
                 if(! reader.update(query))
                 {
-                    request.getSession().setAttribute("msg", "Doctor Not Found! ");
+                    request.getSession().setAttribute("exitcode", "Doctor Not Found! ");
                     revertChanges(request, cf, idFarmacia, codProdotto, codAcquisto, oldQty);
                     return mapping.findForward("ERROR");
                 }
@@ -214,7 +214,7 @@ public class Carrello extends Action
             return mapping.findForward("ERROR");
         }
 
-        request.getSession().setAttribute("msg", "PRODOTTO AGGIUNTO AL CARRELLO");
+        request.getSession().setAttribute("msg", "Product has been added to cart");
         return mapping.findForward("ADD_OK");
     }
 

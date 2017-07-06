@@ -46,11 +46,11 @@ public class Analisi
         String queryTf, queryReg;
 
         queryReg = "SELECT SUM(cart.qty) AS countreg FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
-                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto"
+                + " JOIN cart on purchases.codpurch = cart.codpurch"
                 + " WHERE purchases.completed = true";
 
         queryTf = "SELECT SUM(cart.qty) AS counttf FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
-                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto"
+                + " JOIN cart on purchases.codpurch = cart.codpurch"
                 + " WHERE personnel.idpharm = " + idFarmacia + "AND purchases.completed = true";
 
         return getTable(queryTf, queryReg);
@@ -61,11 +61,11 @@ public class Analisi
         String queryTf, queryReg;
 
         queryReg = "SELECT SUM(cart.qty) AS countreg FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
-                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto JOIN prescriptions on cart.id = prescriptions.idcart"
+                + " JOIN cart on purchases.codpurch = cart.codpurch JOIN prescriptions on cart.id = prescriptions.idcart"
                 + " WHERE purchases.completed = true";
 
         queryTf = "SELECT SUM(cart.qty) AS counttf FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
-                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto JOIN prescriptions on cart.id = prescriptions.idcart"
+                + " JOIN cart on purchases.codpurch = cart.codpurch JOIN prescriptions on cart.id = prescriptions.idcart"
                 + " WHERE personnel.idpharm = " + idFarmacia + "AND purchases.completed = true";
 
         return getTable(queryTf, queryReg);
@@ -76,11 +76,11 @@ public class Analisi
         String queryTf, queryReg;
 
         queryReg = "SELECT COUNT(*) AS countreg FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
-                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto JOIN prescriptions on cart.id = prescriptions.idcart"
+                + " JOIN cart on purchases.codpurch = cart.codpurch JOIN prescriptions on cart.id = prescriptions.idcart"
                 + " WHERE purchases.completed = true";
 
         queryTf = "SELECT COUNT(*) AS counttf FROM purchases JOIN personnel on purchases.cfpers = personnel.cf"
-                + " JOIN cart on purchases.codAcquisto = cart.codAcquisto JOIN prescriptions on cart.id = prescriptions.idcart"
+                + " JOIN cart on purchases.codpurch = cart.codpurch JOIN prescriptions on cart.id = prescriptions.idcart"
                 + " WHERE personnel.idpharm = " + idFarmacia + "AND purchases.completed = true";
 
         return getTable(queryTf, queryReg);

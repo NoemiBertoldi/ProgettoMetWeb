@@ -6,6 +6,9 @@
 <head>
     <title>Purchase</title>
     <jsp:include page="../util/login.jsp"/>
+    <%
+        String role = (String) request.getSession().getAttribute("role");
+    %>
     <script type="text/javascript" src="<%=request.getContextPath()%>/javascript/validazione.js"></script>
 </head>
 <body>
@@ -39,13 +42,13 @@
                     {
                 %>
                 <tr>
-                    <td><%= table.getString("nome") %></td>
-                    <td><%= table.getString("descrizione") %></td>
-                    <td><%= table.getString("prezzo")%></td>
-                    <td><%= table.getString("quantitaDisponibile") %></td>
+                    <td><%= table.getString("name") %></td>
+                    <td><%= table.getString("descr") %></td>
+                    <td><%= table.getString("price")%></td>
+                    <td><%= table.getString("availqty") %></td>
                     <td>
                         <%
-                            if(table.getBoolean("conRicetta"))
+                            if(table.getBoolean("needspres"))
                             {
                         %>
                         &#10004;
@@ -62,13 +65,31 @@
 
                     <form action="<%=request.getContextPath()%>/cart.do" method="post" name="form">
                         <td>
-                            <input type="number" name="qty" min="0" max="<%=table.getString("quantitaDisponibile")%>">boxes<br>
+                            <input type="number" name="qty" min="0" max="<%=table.getString("availqty")%>">boxes<br>
                         </td>
                         <td class="blank">
-                            <input type="text" name="productName" id="productName" value="<%= table.getString("codProdotto") %>"
+                            <input type="text" name="productName" id="productName" value="<%= table.getString("codprod") %>"
                                                  style="visibility:hidden">
+                            <%
+                                if(!table.getBoolean("needspres"))
+                                {
+                            %>
                             <input type="submit" value="Add to Cart">
-
+                            <%
+                                }
+                                else if(table.getBoolean("needspres") && role.equalsIgnoreCase("ob"))
+                                {
+                                    %>
+                            You can't!
+                            <%
+                                }
+                                else
+                                {
+                                    %>
+                            <input type="submit" value="Add to Cart">
+                            <%
+                                }
+                            %>
                         </td>
                     </form>
                 </tr>
@@ -79,7 +100,7 @@
 
             <br>
             <form action="<%=request.getContextPath()%>/purchase.do" method="post" name="form">
-                <input type ="submit" value="Purchase">
+                <input type ="submit" value="Purchase" >
             </form>
         </div>
         <div class="clear"/>

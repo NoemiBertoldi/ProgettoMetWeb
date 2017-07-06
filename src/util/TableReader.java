@@ -75,7 +75,7 @@ public class TableReader {
         while (table.next())
             farmacia = table.getInt("idpharm");
 
-        query = "select products.nome, products.descr,products.price,products.needpres,products.codprod, warehouse.availqty "
+        query = "select products.name, products.descr,products.price,products.needspres,products.codprod, warehouse.availqty "
                 + "from personnel join pharmacies on personnel.idpharm = pharmacies.id "
                 + "join warehouse on pharmacies.id = warehouse.idpharm "
                 + "join products on warehouse.codprod = products.codprod "
@@ -93,7 +93,7 @@ public class TableReader {
         int farmacia = -1;
 
         if (role.toLowerCase().equals("reg")) {
-            query = "SELECT nome AS username FROM pharmacies";
+            query = "SELECT name AS username FROM pharmacies";
         }
         else
         {
@@ -129,6 +129,16 @@ public class TableReader {
         else
             query = "SELECT toReg, toOp, msg, obj, datesent FROM messages WHERE fromOp = '" + username + "'";
 
+        return getTable(query);
+    }
+
+    public ResultSet buildMedTable() throws SQLException {
+        String query= "SELECT * FROM doctors";
+        return getTable(query);
+    }
+
+    public ResultSet buildAccountTable(String username) throws SQLException {
+        String query= "SELECT personnel.name, personnel.surname, personnel.username, pharmacies.name AS pharmname FROM personnel JOIN pharmacies ON personnel.idpharm=pharmacies.id WHERE username='"+username+"'";
         return getTable(query);
     }
 }
